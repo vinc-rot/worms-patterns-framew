@@ -1,6 +1,9 @@
 package WORMS;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Worms extends Application {
@@ -10,7 +13,10 @@ public class Worms extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("worms.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
     }
 }
