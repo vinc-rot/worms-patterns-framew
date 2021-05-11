@@ -13,10 +13,18 @@ public class GameScene extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("worms.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+    public void start(Stage primaryStage) throws Exception {
+        try {
+            Parent root = new FXMLLoader().load(getClass().getResource("worms.fxml"));
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.setTitle("Tiny Worms");
+            primaryStage.show();
+            scene.getRoot().requestFocus();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
