@@ -1,2 +1,2 @@
-# worms-patterns-framew
+# worms-patterns-frame
 ein wormsähnliches Spiel
