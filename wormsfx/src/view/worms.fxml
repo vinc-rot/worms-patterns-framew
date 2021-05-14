@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: derive(black,60%);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" style="-fx-background-color: derive(black,60%);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
    <children>
+      <BorderPane fx:id="borderPane" prefHeight="576.0" prefWidth="1024.0" />
       <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
                   <ImageView fx:id="backgroundImage" fitHeight="576.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
@@ -59,15 +61,21 @@
 
 
 
-      <ImageView fx:id="player1" fitHeight="60.0" fitWidth="60.0" layoutX="200.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player1" fitHeight="60.0" fitWidth="60.0" layoutX="200.0" layoutY="525.0" onKeyReleased="#handleKeyPressed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/worms/Rworm2.png" />
          </image>
+         <rotationAxis>
+            <Point3D y="90.0" z="1.0" />
+         </rotationAxis>
       </ImageView>
-      <ImageView fx:id="player2" fitHeight="60.0" fitWidth="60.0" layoutX="800.0" layoutY="525.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player2" fitHeight="60.0" fitWidth="60.0" layoutX="800.0" layoutY="525.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" translateX="1.0" translateY="1.0" translateZ="1.0">
          <image>
             <Image url="@../resources/worms/Rworm5.png" />
          </image>
+         <rotationAxis>
+            <Point3D y="90.0" z="1.0" />
+         </rotationAxis>
       </ImageView>
       <ImageView fx:id="player1crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="220.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
          <image>

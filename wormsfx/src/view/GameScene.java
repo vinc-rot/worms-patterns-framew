@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class GameScene extends Application {
 
     public static void main(String[] args) {
@@ -23,8 +24,10 @@ public class GameScene extends Application {
             primaryStage.show();
             scene.getRoot().requestFocus();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
+
 }
