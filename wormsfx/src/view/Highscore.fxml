@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
+    <children>
+        <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="50.0" prefHeight="200.0" prefWidth="1000.0" text="HIGHSCORE" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Droid Sans Bold" size="96.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.8595238095238096" startX="1.0" startY="0.24047619047619048">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.511928743532014">
+                           <color>
+                              <Color red="0.8745098114013672" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9333333373069763" green="0.6784313917160034" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <effect>
+                  <GaussianBlur radius="4.0" />
+               </effect></Label>
+
+<!--Player-LIST-->
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="250.0" layoutY="300.0" text="Player" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="48.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="400.0" text="....." textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="450.0" text="....." textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="500.0" text="....." textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="550.0" text="....." textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="600.0" text="....." textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+
+<!--SCORE-LIST-->
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="625.0" layoutY="300.0" text="Score" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="48.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="400.0" text="....." textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="450.0" text="....." textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="500.0" text="....." textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="550.0" text="....." textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="600.0" text="....." textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Label>
+
+            <Label fx:id="back" layoutX="950.0" layoutY="730.0" text="Back" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+        </Pane>
+    </children>
+</AnchorPane>
