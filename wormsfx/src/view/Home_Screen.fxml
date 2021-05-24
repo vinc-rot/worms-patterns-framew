@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
+    <children>
+        <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="50.0" prefHeight="200.0" prefWidth="1000.0" text="Welcome" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Droid Sans Bold" size="96.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.8595238095238096" startX="1.0" startY="0.24047619047619048">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.511928743532014">
+                           <color>
+                              <Color red="0.8745098114013672" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9333333373069763" green="0.6784313917160034" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <effect>
+                  <GaussianBlur radius="4.0" />
+               </effect></Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="200.0" prefHeight="200.0" prefWidth="1000.0" text="Player" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Droid Sans Bold" size="96.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.8595238095238096" startX="1.0" startY="0.24047619047619048">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.511928743532014">
+                           <color>
+                              <Color red="0.8745098114013672" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9333333373069763" green="0.6784313917160034" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <effect>
+                  <GaussianBlur radius="4.0" />
+               </effect></Label>
+            <Label fx:id="clickToPlay" alignment="CENTER" contentDisplay="CENTER" layoutX="365.0" layoutY="450.0" text="Click to play" textFill="#df0000" textOverrun="CLIP">
+               <font>
+                  <Font name="Droid Sans Bold" size="48.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label fx:id="highscores" layoutX="200.0" layoutY="600.0" text="Highscores" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="instructions" layoutX="700.0" layoutY="600.0" text="Instructions" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="114.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/worms/Rworm1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="700.0" layoutY="450.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/worms/Rworm2.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="265.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/worms/Rworm5.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="60.0" layoutX="150.0" layoutY="600.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/badge.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="60.0" layoutX="650.0" layoutY="600.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/crossfade.png" />
+               </image>
+            </ImageView>
+
+            <Label layoutX="950.0" layoutY="730.0" text="Quit" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+        </Pane>
+    </children>
+</AnchorPane>
