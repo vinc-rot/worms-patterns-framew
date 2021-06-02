@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
+<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Home_ScreenController">
     <children>
         <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
          <children>
@@ -67,24 +68,6 @@
                <effect>
                   <GaussianBlur radius="4.0" />
                </effect></Label>
-            <Label fx:id="clickToPlay" alignment="CENTER" contentDisplay="CENTER" layoutX="365.0" layoutY="450.0" text="Click to play" textFill="#df0000" textOverrun="CLIP">
-               <font>
-                  <Font name="Droid Sans Bold" size="48.0" />
-               </font>
-               <effect>
-                  <InnerShadow blurType="GAUSSIAN" />
-               </effect>
-            </Label>
-            <Label fx:id="highscores" layoutX="200.0" layoutY="600.0" text="Highscores" textFill="#eead00">
-               <font>
-                  <Font name="Droid Sans Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="instructions" layoutX="700.0" layoutY="600.0" text="Instructions" textFill="#eead00">
-               <font>
-                  <Font name="Droid Sans Bold" size="24.0" />
-               </font>
-            </Label>
             <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="114.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm1.png" />
@@ -116,6 +99,44 @@
                   <Font name="Droid Sans Bold" size="18.0" />
                </font>
             </Label>
+            <Button id="button1" fx:id="button1" layoutX="371.0" layoutY="450.0" mnemonicParsing="false" onAction="#changeScreenButtonPushed" prefHeight="69.0" prefWidth="224.0" text="Click to play" textFill="#e40b0b">
+               <font>
+                  <Font name="System Bold" size="31.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant>
+                           <color>
+                              <Color red="1.0" green="0.7974537014961243" blue="0.18981482088565826" />
+                           </color>
+                        </Light.Distant>
+                     </light>
+                  </Lighting>
+               </effect>
+            </Button>
+            <Button fx:id="button2" layoutX="190.0" layoutY="594.0" mnemonicParsing="false" onAction="#changeScreenHighscore" style="-fx-background-color: none;" text="Highscore" textFill="#ffe017">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="button3" layoutX="692.0" layoutY="591.0" mnemonicParsing="false" onAction="#changeScreenOptions" style="-fx-background-color: none;" text="Instructions" textFill="#ffe017">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
         </Pane>
     </children>
