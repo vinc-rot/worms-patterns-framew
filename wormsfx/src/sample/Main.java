@@ -1,198 +1,144 @@
 package sample;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+
 public class Main extends Application {
 
-    private GameMenu gameMenu;
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
+    private Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(800, 600);
 
-        InputStream is = Files.newInputStream(Paths.get("../src/resources/title_background.jpg"));
-        Image img = new Image(is);
-        is.close();
+        root.setPrefSize(1050, 600);
 
-        ImageView imgView = new ImageView(img);
-        imgView.setFitWidth(800);
-        imgView.setFitHeight(600);
+        try(InputStream is = Files.newInputStream(Paths.get("resources/title_background.jpg"))){
+            ImageView img = new ImageView(new Image(is));
+            img.setFitWidth(800);
+            img.setFitHeight(600);
+            root.getChildren().add(img);
+        }
+        catch(IOException e) {
+            System.out.println("Couldn't load image");
+        }
 
-        gameMenu = new GameMenu();
-        gameMenu.setVisible(false);
+        Title title = new Title ("Start your own war");
+        title.setTranslateX(50);
+        title.setTranslateY(200);
 
-        root.getChildren().addAll(imgView, gameMenu);
+        MenuItem button1 = new MenuItem("Singleplayer");
+        MenuItem button2 = new MenuItem ("Mutliplayer");
+        MenuItem button3 = new MenuItem("Highscore");
+        MenuItem button4 = new MenuItem ("Options");
+        MenuItem button5 = new MenuItem ("Exit");
+        VBox vbox = new VBox(button1, button2, button3, button4, button5);
+        vbox.setTranslateX(100);
+        vbox.setTranslateY(300);
 
-        Scene scene = new Scene(root);
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                if (!gameMenu.isVisible()) {
-                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
-                    ft.setFromValue(0);
-                    ft.setToValue(1);
-
-                    gameMenu.setVisible(true);
-                    ft.play();
-                }
-                else {
-                    FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
-                    ft.setFromValue(1);
-                    ft.setToValue(0);
-                    ft.setOnFinished(evt -> gameMenu.setVisible(false));
-                    ft.play();
-                }
+        /*button1.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                Stage stage = new Stage();
+                Scene scene = new Scene(GameScene);
+                stage.setScene(scene);
+                stage.show();
             }
         });
+        */
+        root.getChildren().addAll(title,vbox);
 
+        return root;
+
+    }
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Scene scene = new Scene(createContent());
+        primaryStage.setTitle("Worms poor copy");
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
-    private static class GameMenu extends Parent {
-        public GameMenu() {
-            VBox menu0 = new VBox(10);
-            VBox menu1 = new VBox(10);
+    private static class Title extends StackPane{
+        public Title(String name) {
+            Rectangle bg = new Rectangle(375, 60);
+            bg.setStroke(Color.WHITE);
+            bg.setStrokeWidth(2);
+            bg.setFill(null);
 
-            menu0.setTranslateX(100);
-            menu0.setTranslateY(200);
+            Text text = new Text(name);
+            text.setFill(Color.WHITE);
+            text.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 50));
 
-            menu1.setTranslateX(100);
-            menu1.setTranslateY(200);
-
-            final int offset = 400;
-
-            menu1.setTranslateX(offset);
-
-            MenuButton btnResume = new MenuButton("Play");
-            btnResume.setOnMouseClicked(event -> {
-                FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
-                ft.setFromValue(1);
-                ft.setToValue(0);
-                ft.setOnFinished(evt -> setVisible(false));
-                ft.play();
-            });
-
-
-            MenuButton btnOptions = new MenuButton("OPTIONS");
-            btnOptions.setOnMouseClicked(event -> {
-                getChildren().add(menu1);
-
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
-                tt.setToX(menu0.getTranslateX() - offset);
-
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu1);
-                tt1.setToX(menu0.getTranslateX());
-
-                tt.play();
-                tt1.play();
-
-                tt.setOnFinished(evt -> {
-                    getChildren().remove(menu0);
-                });
-            });
-
-            MenuButton btnExit = new MenuButton("EXIT");
-            btnExit.setOnMouseClicked(event -> {
-                System.exit(0);
-            });
-
-            MenuButton btnBack = new MenuButton("BACK");
-            btnBack.setOnMouseClicked(event -> {
-                getChildren().add(menu0);
-
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu1);
-                tt.setToX(menu1.getTranslateX() + offset);
-
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu0);
-                tt1.setToX(menu1.getTranslateX());
-
-                tt.play();
-                tt1.play();
-
-                tt.setOnFinished(evt -> {
-                    getChildren().remove(menu1);
-                });
-            });
-
-            MenuButton btnSound = new MenuButton("SOUND");
-            MenuButton btnVideo = new MenuButton("VIDEO");
-
-            menu0.getChildren().addAll(btnResume, btnOptions, btnExit);
-            menu1.getChildren().addAll(btnBack, btnSound, btnVideo);
-
-            Rectangle bg = new Rectangle(800, 600);
-            bg.setFill(Color.GREY);
-            bg.setOpacity(0.4);
-
-            getChildren().addAll(bg, menu0);
+            setAlignment(Pos.CENTER);
+            getChildren().addAll(bg,text);
         }
     }
 
-    private static class MenuButton extends StackPane {
-        private Text text;
+    private static class MenuItem extends StackPane{
 
-        public MenuButton(String name) {
-            text = new Text(name);
-            text.setFont(text.getFont().font(20));
-            text.setFill(Color.WHITE);
+        public MenuItem(String name) {
+            LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop[] {
+                    new Stop(0, Color.DARKBLUE),
+                    new Stop(0.1, Color.BLACK),
+                    new Stop(0.9, Color.BLACK),
+                    new Stop(1, Color.DARKBLUE)
 
-            Rectangle bg = new Rectangle(250, 30);
-            bg.setOpacity(0.6);
-            bg.setFill(Color.BLACK);
-            bg.setEffect(new GaussianBlur(3.5));
+            });
 
-            setAlignment(Pos.CENTER_LEFT);
-            setRotate(-0.5);
+            Rectangle bg = new Rectangle(200,30);
+            bg.setOpacity(0.4);
+
+            Text text = new Text(name);
+            text.setFill(Color.DARKGREY);
+            text.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD,20));
+
+            setAlignment(Pos.CENTER);
             getChildren().addAll(bg, text);
-
             setOnMouseEntered(event -> {
-                bg.setTranslateX(10);
-                text.setTranslateX(10);
-                bg.setFill(Color.WHITE);
-                text.setFill(Color.BLACK);
+                bg.setFill(gradient);
+                text.setFill(Color.WHITE);
+
             });
 
             setOnMouseExited(event -> {
-                bg.setTranslateX(0);
-                text.setTranslateX(0);
                 bg.setFill(Color.BLACK);
-                text.setFill(Color.WHITE);
+                text.setFill(Color.DARKGREY);
+            });
+            setOnMousePressed(event -> {
+                bg.setFill(Color.DARKVIOLET);
+
             });
 
-            DropShadow drop = new DropShadow(50, Color.WHITE);
-            drop.setInput(new Glow());
+            setOnMouseReleased(event -> {
+                bg.setFill(gradient);
+            });
 
-            setOnMousePressed(event -> setEffect(drop));
-            setOnMouseReleased(event -> setEffect(null));
         }
+
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }
