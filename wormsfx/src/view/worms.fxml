@@ -77,10 +77,39 @@
             <Point3D y="90.0" z="1.0" />
          </rotationAxis>
       </ImageView>
-      <ImageView fx:id="player1crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="250.0" layoutY="680.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player1crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="200.0" layoutY="680.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/crossfade.png" />
          </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+         <rotationAxis>
+            <Point3D x="10.0" />
+         </rotationAxis>
       </ImageView>
+      <ImageView fx:id="player2crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="200.0" layoutY="680.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/crossfade.png" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+         <rotationAxis>
+            <Point3D x="10.0" />
+         </rotationAxis>
+      </ImageView>
+      <ImageView fx:id="player1rocket" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/rocket.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="player2rocket" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/rocket.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
