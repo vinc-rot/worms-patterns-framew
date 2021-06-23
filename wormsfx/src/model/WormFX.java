@@ -18,4 +18,45 @@ public class WormFX {
         this.wormLogo = wormLogo;
     }
 
+    public Worm getWormData() {
+        return wormData;
+    }
+
+    public void setWormData(Worm wormData) {
+        this.wormData = wormData;
+    }
+
+    public ImageView getWormImage() {
+        return wormImage;
+    }
+
+    public void setWormImage(ImageView wormImage) {
+        this.wormImage = wormImage;
+    }
+
+    public ImageView getWormTarget() {
+        return wormTarget;
+    }
+
+    public void setWormTarget(ImageView wormTarget) {
+        this.wormTarget = wormTarget;
+    }
+
+    public ImageView getWormRocket() {
+        return wormRocket;
+    }
+
+    public void setWormRocket(ImageView wormRocket) {
+        this.wormRocket = wormRocket;
+    }
+
+    public ImageView getWormLogo() {
+        return wormLogo;
+    }
+
+    public void setWormLogo(ImageView wormLogo) {
+        this.wormLogo = wormLogo;
+    }
+
+
 }
