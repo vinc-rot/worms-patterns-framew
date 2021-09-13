@@ -5,12 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import server.Server;
+
+import java.io.IOException;
 
 
 public class Main extends Application {
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         try {
             Parent root = FXMLLoader.load(getClass().getResource("Start_Screen.fxml"));
             primaryStage.setTitle("Menü");
@@ -22,6 +28,26 @@ public class Main extends Application {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        Thread starten = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Server CS = new Server();
+                    try {
+                        CS.main();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
-    public static void main(String[] args) {launch(args);}
+
+        starten.start();
+        launch(args);
+    }
+
+
+
 }
