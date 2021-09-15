@@ -1,6 +1,6 @@
-// place this file the path such ends with: ChatServer/server/ChatServer.java
+package model;
 
-package server;
+import controller.ClientThread;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,44 +15,44 @@ public class ChatServer {
     private int serverPort;
     private List<ClientThread> clients; // or "protected static List<ClientThread> clients;"
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ChatServer server = new ChatServer(portNumber);
         server.startServer();
     }
 
-    public ChatServer(int portNumber){
+    public ChatServer(int portNumber) {
         this.serverPort = portNumber;
     }
 
-    public List<ClientThread> getClients(){
+    public List<ClientThread> getClients() {
         return clients;
     }
 
-    private void startServer(){
+    public void startServer() {
         clients = new ArrayList<ClientThread>();
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(serverPort);
             acceptClients(serverSocket);
-        } catch (IOException e){
-            System.err.println("Could not listen on port: "+serverPort);
+        } catch (IOException e) {
+            System.err.println("Could not listen on port: " + serverPort);
             System.exit(1);
         }
     }
 
-    private void acceptClients(ServerSocket serverSocket){
+    private void acceptClients(ServerSocket serverSocket) {
 
         System.out.println("server starts port = " + serverSocket.getLocalSocketAddress());
-        while(true){
-            try{
+        while (true) {
+            try {
                 Socket socket = serverSocket.accept();
                 System.out.println("accepts : " + socket.getRemoteSocketAddress());
                 ClientThread client = new ClientThread(this, socket);
                 Thread thread = new Thread(client);
                 thread.start();
                 clients.add(client);
-            } catch (IOException ex){
-                System.out.println("Accept failed on : "+serverPort);
+            } catch (IOException ex) {
+                System.out.println("Accept failed on : " + serverPort);
             }
         }
     }

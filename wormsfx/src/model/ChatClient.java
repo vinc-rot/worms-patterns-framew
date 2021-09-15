@@ -1,12 +1,14 @@
 // place this file the path such ends with: ChatServer/client/Client.java
 
-package client;
+package model;
+
+import controller.ServerThread;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+public class ChatClient {
 
     private static final String host = "localhost";
     private static final int portNumber = 4444;
@@ -28,17 +30,17 @@ public class Client {
             }
         }
 
-        Client client = new Client(readName, host, portNumber);
+        ChatClient client = new ChatClient(readName, host, portNumber);
         client.startClient(scan);
     }
 
-    private Client(String userName, String host, int portNumber){
+    public ChatClient(String userName, String host, int portNumber){
         this.userName = userName;
         this.serverHost = host;
         this.serverPort = portNumber;
     }
 
-    private void startClient(Scanner scan){
+    public void startClient(Scanner scan){
         try{
             Socket socket = new Socket(serverHost, serverPort);
             Thread.sleep(1000); // waiting for network communicating.

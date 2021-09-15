@@ -12,16 +12,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Home_ScreenController implements Initializable {
+public class HomeScreenController implements Initializable {
     public void changeScreenButtonPushed(ActionEvent event) throws IOException, IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("/view/worms.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
+        Parent sceneParent = FXMLLoader.load(getClass().getResource("/view/worms.fxml"));
+        Scene scene = new Scene(sceneParent);
 
         //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(tableViewScene);
+        window.setScene(scene);
+        window.setResizable(false);
         window.show();
+        scene.getRoot().requestFocus();
     }
     public void changeScreenHighscore(ActionEvent event) throws IOException, IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("/view/Highscore.fxml"));

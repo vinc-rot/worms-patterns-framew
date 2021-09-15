@@ -1,6 +1,8 @@
 // place this file the path such ends with: ChatServer/client/ServerThread.java
 
-package client;
+package controller;
+
+import controller.InGameController;
 
 import java.io.*;
 import java.net.Socket;
@@ -47,14 +49,31 @@ public class ServerThread implements Runnable {
                         System.out.println(serverIn.nextLine());
                     }
                 }
-                if(hasMessages){
+                if(hasMessages) {
                     String nextSend = "";
-                    synchronized(messagesToSend){
+                    synchronized (messagesToSend) {
                         nextSend = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
+/*                    if(nextSend.contains("###"))
+                    {
+                        String WormMovement = nextSend.substring(4,8)
+                        String Value = nextSend.substring(9,10)
+                        switch(WormMovement){
+                        case "WALKR":
+                        case "WALKL": target(+10); break;
+                        case "JUMP_":
+                        case "SHOOT": targetNetworkClient(-10); break;
+                        case "TA_UP": target(-10); break;
+                        case "TA_DN":
+                        default: break;
+                        }
+
+                    }
+                    else{*/
                     serverOut.println(userName + " > " + nextSend);
                     serverOut.flush();
+                //}
                 }
             }
         }

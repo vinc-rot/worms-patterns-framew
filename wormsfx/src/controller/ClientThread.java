@@ -1,6 +1,8 @@
 // place this file the path such ends with: ChatServer/server/ClientThread.java
 
-package server;
+package controller;
+
+import model.ChatServer;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -23,5 +23,6 @@
         <jarDirectory url="file://$MODULE_DIR$/../../Library/Java/javafx-sdk-11.0.2/lib" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="javafx.web" level="project" />
   </component>
 </module>

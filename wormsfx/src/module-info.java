@@ -14,6 +14,4 @@ module javafx {
     exports controller;
     exports model;
 
-
-    opens sample;
 }

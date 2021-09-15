@@ -1,8 +1,6 @@
 package controller;
 
 import javafx.animation.PathTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -12,14 +10,15 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import model.Game;
+import model.Rocket;
 import model.Worm;
 import model.WormFX;
 
 public class InGameController {
 
-    WormFX player1FX;
-    WormFX player2FX;
     WormFX activePlayerFX;
+    WormFX networkPlayerFX;
 
     public InGameController() {
 
@@ -51,13 +50,17 @@ public class InGameController {
 
     @FXML
     public void initialize() {
-        Worm player1Data = new Worm("Hans",100, 200, 100);
-        Worm player2Data = new Worm("Hans",50, 200, 100);
 
-        WormFX player1FX = new WormFX(player1Data, player1, player1crossfade, player1rocket, player1);
-        WormFX player2FX = new WormFX(player2Data, player2, player2crossfade, player2rocket, player2);
+        Worm player1Data = new Worm("Hans", 100, 200, 100);
+        Worm player2Data = new Worm("Hans", 100, 200, 100);
+
+        Game activeWormsGame = new Game(1, 300, player1Data, player2Data);
+
+        WormFX player1FX = new WormFX(activeWormsGame.getPlayer1(), player1, player1crossfade, player1rocket, player1);
+        WormFX player2FX = new WormFX(activeWormsGame.getPlayer2(), player2, player2crossfade, player2rocket, player2);
 
         activePlayerFX = player1FX;
+        networkPlayerFX = player2FX;
 
     }
 
@@ -100,6 +103,22 @@ public class InGameController {
         shootAnimation(activePlayerFX);
     }
 
+    public void walkNetworkClient(int newVal) {
+        walkAnimation(networkPlayerFX, newVal);
+    }
+
+    public void targetNetworkClient(int newVal) {
+        targetAnimation(networkPlayerFX, newVal);
+    }
+
+    public void jumpNetworkClient() {
+        jumpAnimation(networkPlayerFX);
+    }
+
+    public void shootNetworkClient() {
+        shootAnimation(networkPlayerFX);
+    }
+
     private void walkAnimation(WormFX activePlayerFX, int newVal) {
 
         TranslateTransition ttWorm = new TranslateTransition(
@@ -121,9 +140,11 @@ public class InGameController {
             }
         else if (newVal > 0 && activePlayerFX.getWormImage().getRotate() == 0){
             activePlayerFX.getWormImage().setRotate(0);
+            newValRotationAddup = 40;
             }
         else if (newVal < 0 && activePlayerFX.getWormImage().getRotate() == 180) {
             activePlayerFX.getWormImage().setRotate(180);
+            newValRotationAddup = -40;
         }
         else if (newVal < 0 && activePlayerFX.getWormImage().getRotate() == 0) {
             activePlayerFX.getWormImage().setRotate(180);
@@ -149,42 +170,34 @@ public class InGameController {
     }
 
     private void jumpAnimation(WormFX activePlayerFX) {
-
-        TranslateTransition tt1 = new TranslateTransition(
+        TranslateTransition ttTarget = new TranslateTransition(
                 Duration.seconds(0.1), activePlayerFX.getWormImage());
-        tt1.setFromY(activePlayerFX.getWormImage().getTranslateY());
-        tt1.setFromX(activePlayerFX.getWormImage().getTranslateX());
-        tt1.setToX(activePlayerFX.getWormImage().getTranslateY()-50);
-        tt1.setToY(activePlayerFX.getWormImage().getTranslateX()+50);
 
-        TranslateTransition tt2 = new TranslateTransition(
-                Duration.seconds(0.1), activePlayerFX.getWormImage());
-        tt2.setFromY(activePlayerFX.getWormImage().getTranslateY()-50);
-        tt2.setFromX(activePlayerFX.getWormImage().getTranslateX()+50);
-        tt2.setToY(activePlayerFX.getWormImage().getTranslateY());
-        tt2.setToX(activePlayerFX.getWormImage().getTranslateX()+50);
-
-        SequentialTransition st = new SequentialTransition();
-        st.getChildren().addAll(
-                tt1,
-                tt2
-                );
-
-        st.play();
-
+        ttTarget.setFromY(activePlayerFX.getWormImage().getTranslateY());
+        ttTarget.setToY(activePlayerFX.getWormImage().getTranslateY()-40);
+        ttTarget.setAutoReverse(true);
+        ttTarget.play();
     }
 
 
     private void shootAnimation(WormFX activePlayerFX) {
-        Path path = new Path();
-        path.getElements().add(new MoveTo(20,20));
-        path.getElements().add(new CubicCurveTo(380, 280, 1000, 1000, 600, 600));
+        double activeWormX = activePlayerFX.getWormImage().getX()+activePlayerFX.getWormImage().getTranslateX();
+        double activeWormY = activePlayerFX.getWormImage().getY()+activePlayerFX.getWormImage().getTranslateY();
 
+        activePlayerFX.getWormRocket().setVisible(true);
+
+        Rocket activeRocket = new Rocket(100, Math.atan(activePlayerFX.getWormTarget().getTranslateY()/40),9.81, borderPane.getHeight()-activeWormY);
+
+        Path path = new Path();
+        path.getElements().add(new MoveTo(activeWormX,activeWormY));
+        path.getElements().add(new CubicCurveTo(activeWormX,activeWormY, activeWormX+activeRocket.rocketPeakX(), borderPane.getHeight()-activeRocket.rocketPeakY(),0, borderPane.getHeight()));
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(4000));
+        pathTransition.setDuration(Duration.millis(activeRocket.rocketTime()));
         pathTransition.setPath(path);
         pathTransition.setNode(activePlayerFX.getWormRocket());
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setOnFinished(event -> activePlayerFX.getWormRocket().setVisible(false));
         pathTransition.play();
-    }
+        }
 }
+

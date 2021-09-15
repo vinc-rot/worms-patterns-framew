@@ -61,23 +61,28 @@
 
 
 
-      <ImageView fx:id="player1" fitHeight="60.0" fitWidth="60.0" layoutX="200.0" layoutY="680.0" onKeyReleased="#handleKeyPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player1" fitHeight="60.0" fitWidth="60.0" onKeyReleased="#handleKeyPressed" pickOnBounds="true" preserveRatio="true" x="200.0" y="680.0">
          <image>
             <Image url="@../resources/worms/Rworm2.png" />
          </image>
-         <rotationAxis>
-            <Point3D y="90.0" z="1.0" />
-         </rotationAxis>
       </ImageView>
-      <ImageView fx:id="player2" fitHeight="60.0" fitWidth="60.0" layoutX="800.0" layoutY="680.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" translateX="1.0" translateY="1.0" translateZ="1.0">
+      <ImageView fx:id="player2" fitHeight="60.0" fitWidth="60.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" translateX="1.0" translateY="1.0" translateZ="1.0" x="800.0" y="680.0">
          <image>
             <Image url="@../resources/worms/Rworm5.png" />
          </image>
+      </ImageView>
+      <ImageView fx:id="player1crossfade" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" translateX="40.0" x="200.0" y="680.0">
+         <image>
+            <Image url="@../resources/crossfade.png" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
          <rotationAxis>
-            <Point3D y="90.0" z="1.0" />
+            <Point3D />
          </rotationAxis>
       </ImageView>
-      <ImageView fx:id="player1crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="200.0" layoutY="680.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player2crossfade" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" translateX="-40.0" x="800.0" y="680.0">
          <image>
             <Image url="@../resources/crossfade.png" />
          </image>
@@ -88,24 +93,13 @@
             <Point3D x="10.0" />
          </rotationAxis>
       </ImageView>
-      <ImageView fx:id="player2crossfade" fitHeight="20.0" fitWidth="20.0" layoutX="200.0" layoutY="680.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/crossfade.png" />
-         </image>
-         <viewport>
-            <Rectangle2D />
-         </viewport>
-         <rotationAxis>
-            <Point3D x="10.0" />
-         </rotationAxis>
-      </ImageView>
-      <ImageView fx:id="player1rocket" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player1rocket" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../resources/rocket.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="player2rocket" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="player2rocket" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="225.0" visible="false">
          <image>
             <Image url="@../resources/rocket.png" />
          </image>

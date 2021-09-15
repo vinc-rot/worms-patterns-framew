@@ -2,11 +2,13 @@
 
 package client;
 
+import controller.ServerThread;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client2 {
+public class ChatClient2 {
 
     private static final String host = "localhost";
     private static final int portNumber = 4444;
@@ -28,11 +30,11 @@ public class Client2 {
             }
         }
 
-        Client2 client = new Client2(readName, host, portNumber);
+        ChatClient2 client = new ChatClient2(readName, host, portNumber);
         client.startClient(scan);
     }
 
-    private Client2(String userName, String host, int portNumber){
+    private ChatClient2(String userName, String host, int portNumber){
         this.userName = userName;
         this.serverHost = host;
         this.serverPort = portNumber;
