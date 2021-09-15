@@ -1,3 +1,5 @@
+package view;
+
 import model.ChatClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
