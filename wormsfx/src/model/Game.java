@@ -1,49 +1,48 @@
 package model;
 
+import controller.InGameController;
+
 public class Game {
 
-    private int levelMap;
-    private int roundTime;
-    private Worm player1;
-    private Worm player2;
+    private Worm activePlayer;
 
-    public Game(int levelMap, int roundTime, Worm player1, Worm player2) {
-        this.levelMap = levelMap;
-        this.roundTime = roundTime;
-        this.player1 = player1;
-        this.player2 = player2;
+    private Worm networkPlayer;
+
+    private static Game gameInstance;
+
+    private static InGameController inGameControllerInstance;
+
+    private Game() {
     }
 
-    public int getLevelMap() {
-        return levelMap;
+    public static Game getInstance() {
+        if (gameInstance == null)
+            gameInstance = new Game();
+        return gameInstance;
     }
 
-    public void setLevelMap(int levelMap) {
-        this.levelMap = levelMap;
+    public Worm getActivePlayer() {
+        return activePlayer;
     }
 
-    public int getRoundTime() {
-        return roundTime;
+    public void setActivePlayer(Worm activePlayer) {
+        this.activePlayer = activePlayer;
     }
 
-    public void setRoundTime(int roundTime) {
-        this.roundTime = roundTime;
+    public Worm getNetworkPlayer() {
+        return networkPlayer;
     }
 
-    public Worm getPlayer1() {
-        return player1;
+    public void setNetworkPlayer(Worm networkPlayer) {
+        this.networkPlayer = networkPlayer;
     }
 
-    public void setPlayer1(Worm player1) {
-        this.player1 = player1;
+    public static InGameController getInGameControllerInstance() {
+        return inGameControllerInstance;
     }
 
-    public Worm getPlayer2() {
-        return player2;
-    }
-
-    public void setPlayer2(Worm player2) {
-        this.player2 = player2;
+    public static void setInGameControllerInstance(InGameController inGameControllerInstance) {
+        Game.inGameControllerInstance = inGameControllerInstance;
     }
 }
 

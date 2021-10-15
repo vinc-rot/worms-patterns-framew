@@ -20,17 +20,17 @@
 <!--      Player 1 + Punkte-->
       <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="20.0" layoutY="35.0" prefHeight="50.0" prefWidth="150.0">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="player1icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm2.png" />
                </image>
             </ImageView>
-            <Text fill="#eead00" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" textAlignment="CENTER">
+            <Text fx:id="player1name" fill="#eead00" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" textAlignment="CENTER">
                <font>
                   <Font name="Droid Sans Bold" size="20.0" />
                </font>
             </Text>
-            <Text fill="#df0000" layoutX="125.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="72" translateX="50.0" translateY="-75.0">
+            <Text fx:id="player1lifepoints" fill="#df0000" layoutX="125.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="72" translateX="50.0" translateY="-75.0">
                <font>
                   <Font name="Droid Sans Bold" size="20.0" />
                </font>
@@ -41,17 +41,17 @@
 <!--      Player 2 + Punkte-->
       <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="875.0" layoutY="35.0" prefHeight="50.0" prefWidth="150.0">
          <children>
-            <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="player2icon" fitHeight="50.0" fitWidth="50.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm5.png" />
                </image>
             </ImageView>
-            <Text fill="#eead00" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" textAlignment="CENTER">
+            <Text fx:id="player2name" fill="#eead00" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" textAlignment="CENTER">
                <font>
                   <Font name="Droid Sans Bold" size="20.0" />
                </font>
             </Text>
-            <Text fill="#df0000" strokeType="OUTSIDE" strokeWidth="0.0" text="135" translateX="-50.0" translateY="-75.0" y="2.0">
+            <Text fx:id="player2lifepoints" fill="#df0000" strokeType="OUTSIDE" strokeWidth="0.0" text="135" translateX="-50.0" translateY="-75.0" y="2.0">
                <font>
                   <Font name="Droid Sans Bold" size="20.0" />
                </font>
@@ -104,6 +104,6 @@
             <Image url="@../resources/rocket.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="player1icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

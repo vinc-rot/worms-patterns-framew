@@ -3,16 +3,18 @@ package controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
-import model.Game;
 import model.Rocket;
 import model.Worm;
+import model.Game;
 import model.WormFX;
 
 public class InGameController {
@@ -43,24 +45,46 @@ public class InGameController {
     private ImageView player2rocket;
 
     @FXML
+    private Text player1lifepoints;
+
+    @FXML
+    private Text player2lifepoints;
+
+    @FXML
+    private Text player1name;
+
+    @FXML
+    private Text player2name;
+
+    @FXML
+    private ImageView player1icon;
+
+    @FXML
+    private ImageView player2icon;
+
+    @FXML
     private Pane borderPane;
 
     @FXML
     private AnchorPane anchorPane;
 
+    private ServerThread ServerThread;
+
+    private Game activeGame;
+
     @FXML
     public void initialize() {
 
-        Worm player1Data = new Worm("Hans", 100, 200, 100);
-        Worm player2Data = new Worm("Hans", 100, 200, 100);
+          activeGame = Game.getInstance();
 
-        Game activeWormsGame = new Game(1, 300, player1Data, player2Data);
+          activePlayerFX = new WormFX(activeGame.getActivePlayer(), player1, player1crossfade, player1rocket, player1);
+          networkPlayerFX = new WormFX(activeGame.getNetworkPlayer(), player2, player2crossfade, player2rocket, player2);
 
-        WormFX player1FX = new WormFX(activeWormsGame.getPlayer1(), player1, player1crossfade, player1rocket, player1);
-        WormFX player2FX = new WormFX(activeWormsGame.getPlayer2(), player2, player2crossfade, player2rocket, player2);
+          player1name.setText(activeGame.getActivePlayer().getWormName());
+          player2name.setText(activeGame.getNetworkPlayer().getWormName());
 
-        activePlayerFX = player1FX;
-        networkPlayerFX = player2FX;
+          player1lifepoints.setText(String.valueOf(activeGame.getActivePlayer().getLifePoints()));
+          player2lifepoints.setText(String.valueOf(activeGame.getNetworkPlayer().getLifePoints()));
 
     }
 
@@ -102,6 +126,7 @@ public class InGameController {
     private void shoot() {
         shootAnimation(activePlayerFX);
     }
+
 
     public void walkNetworkClient(int newVal) {
         walkAnimation(networkPlayerFX, newVal);

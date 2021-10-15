@@ -1,5 +1,7 @@
 package view;
 
+import controller.HomeScreenController;
+import controller.InGameController;
 import model.ChatClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +16,16 @@ import java.util.Scanner;
 
 public class Main extends Application {
 
+    static InGameController inGameControllerHandle;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Start_Screen.fxml"));
+            FXMLLoader startScreenFXML = new FXMLLoader(getClass().getResource("Start_Screen.fxml"));
+            Parent root = startScreenFXML.load();
             primaryStage.setTitle("Menü");
+
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -52,6 +58,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) throws IOException { launch(args);}
 

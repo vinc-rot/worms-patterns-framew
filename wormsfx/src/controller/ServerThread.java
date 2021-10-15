@@ -3,11 +3,15 @@
 package controller;
 
 import controller.InGameController;
+import javafx.event.ActionEvent;
+import model.Game;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import static model.Game.getInGameControllerInstance;
 
 public class ServerThread implements Runnable {
     private Socket socket;
@@ -55,26 +59,10 @@ public class ServerThread implements Runnable {
                         nextSend = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
-/*                    if(nextSend.contains("###"))
-                    {
-                        String WormMovement = nextSend.substring(4,8)
-                        String Value = nextSend.substring(9,10)
-                        switch(WormMovement){
-                        case "WALKR":
-                        case "WALKL": target(+10); break;
-                        case "JUMP_":
-                        case "SHOOT": targetNetworkClient(-10); break;
-                        case "TA_UP": target(-10); break;
-                        case "TA_DN":
-                        default: break;
-                        }
-
-                    }
-                    else{*/
+                    getInGameControllerInstance().walkNetworkClient(-10);
                     serverOut.println(userName + " > " + nextSend);
                     serverOut.flush();
-                //}
-                }
+                    }
             }
         }
         catch(IOException ex){
@@ -83,3 +71,4 @@ public class ServerThread implements Runnable {
 
     }
 }
+
