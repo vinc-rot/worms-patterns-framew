@@ -59,7 +59,7 @@ public class ServerThread implements Runnable {
                         nextSend = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
-                    getInGameControllerInstance().walkNetworkClient(-10);
+                    //getInGameControllerInstance().walkNetworkClient(-10);
                     serverOut.println(userName + " > " + nextSend);
                     serverOut.flush();
                     }

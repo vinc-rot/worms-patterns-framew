@@ -127,7 +127,6 @@ public class InGameController {
         shootAnimation(activePlayerFX);
     }
 
-
     public void walkNetworkClient(int newVal) {
         walkAnimation(networkPlayerFX, newVal);
     }
