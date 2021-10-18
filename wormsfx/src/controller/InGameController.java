@@ -18,7 +18,8 @@ import model.WormFX;
 public class InGameController {
 
     WormFX activePlayerFX;
-    WormFX networkPlayerFX;
+    WormFX serverPlayerFX;
+    WormFX clientPlayerFX;
 
     public InGameController() {
 
@@ -68,15 +69,13 @@ public class InGameController {
 
     private ServerThread ServerThread;
 
-    private Game activeGame;
-
     @FXML
     public void initialize() {
 
-        activeGame = Game.getInstance();
+        Game activeGame = Game.getInstance();
 
-        activePlayerFX = new WormFX(activeGame.getServerPlayer(), player1, player1crossfade, player1rocket, player1);
-        networkPlayerFX = new WormFX(activeGame.getClientPlayer(), player2, player2crossfade, player2rocket, player2);
+        serverPlayerFX = new WormFX(activeGame.getServerPlayer(), player1, player1crossfade, player1rocket, player1);
+        clientPlayerFX = new WormFX(activeGame.getClientPlayer(), player2, player2crossfade, player2rocket, player2);
 
         player1name.setText(activeGame.getServerPlayer().getWormName());
         player2name.setText(activeGame.getClientPlayer().getWormName());
@@ -84,6 +83,11 @@ public class InGameController {
         player1lifepoints.setText(String.valueOf(activeGame.getServerPlayer().getLifePoints()));
         player2lifepoints.setText(String.valueOf(activeGame.getClientPlayer().getLifePoints()));
 
+        if (player1name.getText() != "ServerPlayer" && player2name.getText() == "ClientPlayer") {
+            activePlayerFX = serverPlayerFX;
+        } else if (player1name.getText() == "ServerPlayer" && player2name.getText() != "ClientPlayer"){
+            activePlayerFX = clientPlayerFX;
+        }
     }
 
     @FXML
@@ -125,7 +129,7 @@ public class InGameController {
         shootAnimation(activePlayerFX);
     }
 
-    public void walkNetworkClient(int newVal) {
+    /*public void walkNetworkClient(int newVal) {
         walkAnimation(networkPlayerFX, newVal);
     }
 
@@ -139,7 +143,7 @@ public class InGameController {
 
     public void shootNetworkClient() {
         shootAnimation(networkPlayerFX);
-    }
+    }*/
 
     private void walkAnimation(WormFX activePlayerFX, int newVal) {
 

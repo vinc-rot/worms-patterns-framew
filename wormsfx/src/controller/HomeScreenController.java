@@ -15,6 +15,7 @@ import model.Game;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class HomeScreenController {
@@ -84,26 +85,20 @@ public class HomeScreenController {
             Game.getInstance().setServerPlayer(Game.getInstance().getLoggedInPlayer());
 
             // ChatServer mit Netzwerk-IP und -Port als Thread starten
-            Thread startServer = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        ChatServer server = new ChatServer(Game.getInstance().getNetworkPort());
-                        server.startServer();
-                    }
+            Thread startServer = new Thread(() -> {
+                while (true) {
+                    ChatServer server = new ChatServer(Game.getInstance().getNetworkPort());
+                    server.startServer();
                 }
             });
             startServer.start();
 
             // ChatClient ServerPlayer-Namen und Netzwerk-IP und -Port starten
-            Thread startClient = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        Scanner scan = new Scanner(System.in);
-                        ChatClient client = new ChatClient((activeGame.getServerPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
-                        client.startClient(scan);
-                    }
+            Thread startClient = new Thread(() -> {
+                while (true) {
+                    Scanner scan = new Scanner(System.in);
+                    ChatClient client = new ChatClient((activeGame.getServerPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
+                    client.startClient(scan);
                 }
             });
 
@@ -121,22 +116,18 @@ public class HomeScreenController {
             Game.getInstance().setClientPlayer(Game.getInstance().getLoggedInPlayer());
 
             // Starten des ChatClient mit Spielernamen und Netzwerkinformationen (IP und Port)
-            Thread startClient = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        Scanner scan = new Scanner(System.in);
-                        ChatClient client = new ChatClient((activeGame.getClientPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
-                        client.startClient(scan);
-                    }
+            Thread startClient = new Thread(() -> {
+                while (true) {
+                    Scanner scan = new Scanner(System.in);
+                    ChatClient client = new ChatClient((activeGame.getClientPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
+                    client.startClient(scan);
                 }
             });
 
             startClient.start();
-
         }
 
-        Parent sceneParent = FXMLLoader.load(getClass().getResource("/view/worms.fxml"));
+        Parent sceneParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/worms.fxml")));
         Scene scene = new Scene(sceneParent);
 
         //This line gets the Stage information
@@ -150,7 +141,7 @@ public class HomeScreenController {
 
 
     public void changeScreenHighscore(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("/view/Highscore.fxml"));
+        Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/Highscore.fxml")));
         Scene tableViewScene = new Scene(tableViewParent);
 
         //This line gets the Stage information
@@ -160,7 +151,7 @@ public class HomeScreenController {
         window.show();
     }
     public void changeScreenOptions(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("/view/Instructions.fxml"));
+        Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/Instructions.fxml")));
         Scene tableViewScene = new Scene(tableViewParent);
 
         //This line gets the Stage information

@@ -38,7 +38,6 @@ public class ClientThread implements Runnable {
                     // NOTE: if you want to check server can read input, uncomment next line and check server file console.
                     // System.out.println(input);
                     for(ClientThread thatClient : server.getClients()){
-                        System.out.println(server.getClients());
                         PrintWriter thatClientOut = thatClient.getWriter();
                         if(thatClientOut != null){
                             thatClientOut.write(input + "\r\n");

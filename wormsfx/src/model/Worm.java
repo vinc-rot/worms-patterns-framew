@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.ImageView;
-
-
 public class Worm {
 
     private String wormName;
