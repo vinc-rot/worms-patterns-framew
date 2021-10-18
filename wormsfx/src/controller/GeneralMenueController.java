@@ -7,12 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import java.io.IOException;
-
 import model.Game;
 import model.Worm;
+
+import java.io.IOException;
 
 
 public class GeneralMenueController {
@@ -20,7 +19,7 @@ public class GeneralMenueController {
     @FXML
     private TextField playername;
 
-    public void changeScreenBack(ActionEvent event) throws IOException, IOException {
+    public void changeScreenBack(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
         Parent sceneParent = loader.load();
@@ -32,10 +31,11 @@ public class GeneralMenueController {
         window.setScene(scene);
         window.show();
     }
-    public void changeScreenLogin(ActionEvent event) throws IOException, IOException {
+    public void changeScreenLogin(ActionEvent event) throws IOException {
 
-        Game.getInstance().setActivePlayer(new Worm(playername.getText(), 100, 200, 100));
-        Game.getInstance().setNetworkPlayer(new Worm("NetworkPlayerTest", 100, 200, 100));
+        Game.getInstance().setLoggedInPlayer(new Worm(playername.getText(), 100, 200, 100));
+        Game.getInstance().setServerPlayer(new Worm("ServerPlayer", 100, 200, 100));
+        Game.getInstance().setClientPlayer(new Worm("ClientPlayer", 100, 200, 100));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
         Parent sceneParent = loader.load();

@@ -3,7 +3,6 @@ package controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -12,9 +11,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import model.Rocket;
-import model.Worm;
 import model.Game;
+import model.Rocket;
 import model.WormFX;
 
 public class InGameController {
@@ -75,16 +73,16 @@ public class InGameController {
     @FXML
     public void initialize() {
 
-          activeGame = Game.getInstance();
+        activeGame = Game.getInstance();
 
-          activePlayerFX = new WormFX(activeGame.getActivePlayer(), player1, player1crossfade, player1rocket, player1);
-          networkPlayerFX = new WormFX(activeGame.getNetworkPlayer(), player2, player2crossfade, player2rocket, player2);
+        activePlayerFX = new WormFX(activeGame.getServerPlayer(), player1, player1crossfade, player1rocket, player1);
+        networkPlayerFX = new WormFX(activeGame.getClientPlayer(), player2, player2crossfade, player2rocket, player2);
 
-          player1name.setText(activeGame.getActivePlayer().getWormName());
-          player2name.setText(activeGame.getNetworkPlayer().getWormName());
+        player1name.setText(activeGame.getServerPlayer().getWormName());
+        player2name.setText(activeGame.getClientPlayer().getWormName());
 
-          player1lifepoints.setText(String.valueOf(activeGame.getActivePlayer().getLifePoints()));
-          player2lifepoints.setText(String.valueOf(activeGame.getNetworkPlayer().getLifePoints()));
+        player1lifepoints.setText(String.valueOf(activeGame.getServerPlayer().getLifePoints()));
+        player2lifepoints.setText(String.valueOf(activeGame.getClientPlayer().getLifePoints()));
 
     }
 
@@ -161,11 +159,11 @@ public class InGameController {
         if (newVal > 0 && activePlayerFX.getWormImage().getRotate() == 180 ) {
             activePlayerFX.getWormImage().setRotate(0);
             newValRotationAddup = 40;
-            }
+        }
         else if (newVal > 0 && activePlayerFX.getWormImage().getRotate() == 0){
             activePlayerFX.getWormImage().setRotate(0);
             newValRotationAddup = 40;
-            }
+        }
         else if (newVal < 0 && activePlayerFX.getWormImage().getRotate() == 180) {
             activePlayerFX.getWormImage().setRotate(180);
             newValRotationAddup = -40;
@@ -222,6 +220,5 @@ public class InGameController {
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setOnFinished(event -> activePlayerFX.getWormRocket().setVisible(false));
         pathTransition.play();
-        }
+    }
 }
-

@@ -4,9 +4,15 @@ import controller.InGameController;
 
 public class Game {
 
-    private Worm activePlayer;
+    private Worm loggedInPlayer;
 
-    private Worm networkPlayer;
+    private Worm serverPlayer;
+
+    private Worm clientPlayer;
+
+    private String networkIP;
+
+    private int networkPort;
 
     private static Game gameInstance;
 
@@ -21,21 +27,37 @@ public class Game {
         return gameInstance;
     }
 
-    public Worm getActivePlayer() {
-        return activePlayer;
+    public Worm getLoggedInPlayer() {
+        return loggedInPlayer;
     }
 
-    public void setActivePlayer(Worm activePlayer) {
-        this.activePlayer = activePlayer;
+    public void setLoggedInPlayer(Worm loggedInPlayer) {
+        this.loggedInPlayer = loggedInPlayer;
     }
 
-    public Worm getNetworkPlayer() {
-        return networkPlayer;
+    public Worm getServerPlayer() {
+        return serverPlayer;
     }
 
-    public void setNetworkPlayer(Worm networkPlayer) {
-        this.networkPlayer = networkPlayer;
+    public void setServerPlayer(Worm serverPlayer) {
+        this.serverPlayer = serverPlayer;
     }
+
+    public Worm getClientPlayer() {
+        return clientPlayer;
+    }
+
+    public void setClientPlayer(Worm clientPlayer) {
+        this.clientPlayer = clientPlayer;
+    }
+
+    public String getNetworkIP() { return networkIP; }
+
+    public void setNetworkIP(String networkIP) { this.networkIP = networkIP;  }
+
+    public int getNetworkPort() { return networkPort; }
+
+    public void setNetworkPort(int networkPort) { this.networkPort = networkPort; }
 
     public static InGameController getInGameControllerInstance() {
         return inGameControllerInstance;

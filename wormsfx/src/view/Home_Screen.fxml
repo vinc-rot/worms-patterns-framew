@@ -8,9 +8,9 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
-    <children>
-        <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
+<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
+   <children>
+      <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="50.0" prefHeight="200.0" prefWidth="1000.0" text="Welcome" textAlignment="CENTER" wrapText="true">
                <font>
@@ -73,33 +73,37 @@
                   <Image url="@../resources/worms/Rworm1.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="700.0" layoutY="450.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="884.0" layoutY="276.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm2.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="265.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="100.0" layoutY="441.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm5.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="60.0" layoutX="150.0" layoutY="600.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="60.0" layoutX="72.0" layoutY="674.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/badge.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="30.0" fitWidth="60.0" layoutX="650.0" layoutY="600.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="60.0" layoutX="415.0" layoutY="679.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/crossfade.png" />
                </image>
             </ImageView>
 
-            <Label layoutX="950.0" layoutY="730.0" text="Quit" textFill="#df0000">
+            <Button id="quitButton" fx:id="quitButton" layoutX="950.0" layoutY="730.0" mnemonicParsing="false" onAction="#quitButtonPushed" style="-fx-background-color: none;" text="Quit" textFill="#df0000">
                <font>
                   <Font name="Droid Sans Bold" size="18.0" />
                </font>
-            </Label>
-            <Button id="button1" fx:id="button1" layoutX="371.0" layoutY="450.0" mnemonicParsing="false" onAction="#changeScreenButtonPushed" prefHeight="69.0" prefWidth="224.0" text="Click to play" textFill="#e40b0b">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+
+            <Button id="button1" fx:id="button1" layoutX="399.0" layoutY="554.0" mnemonicParsing="false" onAction="#changeScreenButtonPushed" prefHeight="69.0" prefWidth="224.0" text="Click to play" textFill="#e40b0b">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
@@ -121,7 +125,7 @@
                   </Lighting>
                </effect>
             </Button>
-            <Button fx:id="button2" layoutX="190.0" layoutY="594.0" mnemonicParsing="false" onAction="#changeScreenHighscore" style="-fx-background-color: none;" text="Highscore" textFill="#ffe017">
+            <Button fx:id="button2" layoutX="112.0" layoutY="668.0" mnemonicParsing="false" onAction="#changeScreenHighscore" style="-fx-background-color: none;" text="Highscore" textFill="#ffe017">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -129,7 +133,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="button3" layoutX="692.0" layoutY="591.0" mnemonicParsing="false" onAction="#changeScreenOptions" style="-fx-background-color: none;" text="Instructions" textFill="#ffe017">
+            <Button fx:id="button3" layoutX="457.0" layoutY="670.0" mnemonicParsing="false" onAction="#changeScreenOptions" style="-fx-background-color: none;" text="Instructions" textFill="#ffe017">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -137,7 +141,13 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <RadioButton fx:id="rb_CreateGame" layoutX="627.0" layoutY="392.0" mnemonicParsing="false" text="Spiel erstellen" />
+            <RadioButton fx:id="rb_JoinGame" layoutX="809.0" layoutY="392.0" mnemonicParsing="false" text="Spiel beitreten" />
+            <TextField fx:id="tf_IP" layoutX="620.0" layoutY="465.0" prefHeight="25.0" prefWidth="152.0" promptText="IP-Adresse" text="localhost" />
+            <TextField fx:id="tf_Port" layoutX="809.0" layoutY="465.0" promptText="4444" text="4444" />
+
+
          </children>
-        </Pane>
-    </children>
+      </Pane>
+   </children>
 </AnchorPane>

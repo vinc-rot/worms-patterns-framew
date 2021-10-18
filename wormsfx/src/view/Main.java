@@ -1,17 +1,16 @@
 package view;
 
-import controller.HomeScreenController;
 import controller.InGameController;
-import model.ChatClient;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.ChatServer;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 
 public class Main extends Application {
@@ -30,7 +29,7 @@ public class Main extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            Thread startClient = new Thread(new Runnable() {
+            /*Thread startClient = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (true) {
@@ -39,24 +38,32 @@ public class Main extends Application {
                         client.startClient(scan);
                     }
                 }
-            });
+            });*/
 
-            Thread startServer = new Thread(new Runnable() {
+            /*Thread startServer = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (true) {
-                        ChatServer server = new ChatServer(4444);
+                        ChatServer server = new ChatServer(5555);
                         server.startServer();
                     }
                 }
-            });
+            });*/
 
-            startServer.start();
-            startClient.start();
+            //startServer.start();
+            //startClient.start();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
 

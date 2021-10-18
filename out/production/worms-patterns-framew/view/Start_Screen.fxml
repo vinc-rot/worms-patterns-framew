@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GeneralMenueController">
+   <children>
+      <Pane layoutX="-1.0" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
+         <children>
+            <ImageView fitHeight="540.0" fitWidth="480.0" layoutX="272.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/worms-logo1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="540.0" fitWidth="480.0" layoutX="272.0" layoutY="161.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/StartYourOwnWar.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="540.0" fitWidth="960.0" layoutX="68.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/Worms-Background-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="playername" layoutX="371.0" layoutY="645.0" promptText="Playername">
+               <font>
+                  <Font name="Droid Sans Bold" size="18.0" />
+               </font></TextField>
+            <Button fx:id="login" layoutX="623.0" layoutY="645.0" mnemonicParsing="false" onAction="#changeScreenLogin" style="-fx-background-color: #EEAD00;" text="Login" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="18.0" />
+               </font></Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

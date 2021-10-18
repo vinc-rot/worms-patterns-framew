@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import static model.Game.getInGameControllerInstance;
-
 public class ClientThread implements Runnable {
     private Socket socket;
     private PrintWriter clientOut;
@@ -35,11 +33,12 @@ public class ClientThread implements Runnable {
             // start communicating
             while(!socket.isClosed()){
                 if(in.hasNextLine()){
-                    getInGameControllerInstance().walkNetworkClient(-10);
+                    //getInGameControllerInstance().walkNetworkClient(-10);
                     String input = in.nextLine();
                     // NOTE: if you want to check server can read input, uncomment next line and check server file console.
                     // System.out.println(input);
                     for(ClientThread thatClient : server.getClients()){
+                        System.out.println(server.getClients());
                         PrintWriter thatClientOut = thatClient.getWriter();
                         if(thatClientOut != null){
                             thatClientOut.write(input + "\r\n");

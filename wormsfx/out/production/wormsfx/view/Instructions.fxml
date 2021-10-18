@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GeneralMenueController">
+    <children>
+        <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="50.0" prefHeight="200.0" prefWidth="1000.0" text="Instructions" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Droid Sans Bold" size="96.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.8595238095238096" startX="1.0" startY="0.24047619047619048">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.511928743532014">
+                           <color>
+                              <Color red="0.8745098114013672" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9333333373069763" green="0.6784313917160034" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <effect>
+                  <GaussianBlur radius="4.0" />
+               </effect></Label>
+            <Label layoutX="100.0" layoutY="300.0" text="moving left and right" textAlignment="CENTER" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="550.0" layoutY="300.0" text="coursor LEFT and RIGHT" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="238.0" layoutY="375.0" text="jump" textAlignment="CENTER" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="700.0" layoutY="375.0" text="SPACE" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="126.0" layoutY="450.0" text="moving crossfade" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="560.0" layoutY="450.0" text="coursor UP and DOWN" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="249.0" layoutY="525.0" text="Fire" textFill="#df0000">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Label layoutX="698.0" layoutY="525.0" text="ENTER" textFill="#eead00">
+               <font>
+                  <Font name="Droid Sans Bold" size="36.0" />
+               </font>
+               <effect>
+                  <InnerShadow blurType="GAUSSIAN" />
+               </effect>
+            </Label>
+            <Button layoutX="925.0" layoutY="716.0" mnemonicParsing="false" onAction="#changeScreenBack" style="-fx-background-color: none;" text="Back" textFill="#ee0f0f">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+        </Pane>
+    </children>
+</AnchorPane>
