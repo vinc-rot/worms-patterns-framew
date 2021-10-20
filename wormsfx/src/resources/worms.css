@@ -18,3 +18,12 @@
     100% { opacity: 0; }
 }
 
+#bt_left{
+    -fx-graphic: url("arrow_left.png");
+}
+#bt_right {
+    -fx-graphic: url("arrow_right.png");
+}
+.arrowButton{
+    -fx-background-color: transparent;
+}

@@ -7,10 +7,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ChatClient;
 import model.ChatServer;
 import model.Game;
+import model.Worm;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -45,6 +51,17 @@ public class HomeScreenController {
     private TextField tf_Port;
 
     private Game activeGame;
+    private int skinID = 0;
+    public Pane mainPane;
+
+    @FXML
+    public Button bt_left;
+
+    @FXML
+    public Button bt_right;
+
+    @FXML
+    public ImageView iv_skin;
 
     @FXML
     public void initialize() throws UnknownHostException {
@@ -58,6 +75,11 @@ public class HomeScreenController {
         rb_JoinGame.setToggleGroup(group);
 
         tf_IP.setText(InetAddress.getLocalHost().getHostAddress());
+
+        mainPane.setOnKeyPressed(event -> {
+            event.consume();
+            changeSkin(event);
+        });
 
 
     }
@@ -82,7 +104,8 @@ public class HomeScreenController {
         if (rb_CreateGame.isSelected()) {
 
             // LoggedInPlayer wird zum ServerPlayer
-            Game.getInstance().setServerPlayer(Game.getInstance().getLoggedInPlayer());
+            //Game.getInstance().setServerPlayer(Game.getInstance().getLoggedInPlayer());
+            Game.getInstance().setServerPlayer(new Worm(playerlabel.getText()));
 
             // ChatServer mit Netzwerk-IP und -Port als Thread starten
             Thread startServer = new Thread(() -> {
@@ -113,7 +136,8 @@ public class HomeScreenController {
 
         if (rb_JoinGame.isSelected()) {
 
-            Game.getInstance().setClientPlayer(Game.getInstance().getLoggedInPlayer());
+            //Game.getInstance().setClientPlayer(Game.getInstance().getLoggedInPlayer());
+            Game.getInstance().setClientPlayer(new Worm(playerlabel.getText()));
 
             // Starten des ChatClient mit Spielernamen und Netzwerkinformationen (IP und Port)
             Thread startClient = new Thread(() -> {
@@ -160,6 +184,39 @@ public class HomeScreenController {
         window.setScene(tableViewScene);
         window.show();
     }
+
+    private void changeSkin(KeyEvent event) {
+        if (event.getCode() == KeyCode.RIGHT) {
+            nextSkin();
+            bt_left.setDefaultButton(true);
+        } else if (event.getCode() == KeyCode.LEFT) {
+            previousSkin();
+            bt_right.setDefaultButton(true);
+        } else if (event.isControlDown() && event.getCode() == KeyCode.P) {
+            skinID = 99;
+            nextSkin();
+        }
+
+    }
+
+    public void previousSkin() {
+        skinID--;
+        if (skinID < 0) {
+            skinID = Worm.WORM_SKINS - 1;
+        }
+        iv_skin.setImage(new Image(String.format("/resources/worms/worm%d.png", skinID)));
+    }
+
+    public void nextSkin() {
+        skinID++;
+        if (skinID >= Worm.WORM_SKINS) {
+            if (skinID != 100) {
+                skinID = 0;
+            }
+        }
+        iv_skin.setImage(new Image(String.format("/resources/worms/Rworm%d.png", skinID)));
+    }
+
 
     // QuitButton-Handling
     @FXML
