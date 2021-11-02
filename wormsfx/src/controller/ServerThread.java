@@ -2,16 +2,14 @@
 
 package controller;
 
-import controller.InGameController;
-import javafx.event.ActionEvent;
 import model.Game;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
-
-import static model.Game.getInGameControllerInstance;
 
 public class ServerThread implements Runnable {
     private Socket socket;
@@ -19,6 +17,9 @@ public class ServerThread implements Runnable {
     private boolean isAlived;
     private final LinkedList<String> messagesToSend;
     private boolean hasMessages = false;
+    // Test für Observer
+    NetworkObserver networkObserver = new NetworkObserver();
+
 
     public ServerThread(Socket socket, String userName){
         this.socket = socket;
@@ -36,9 +37,10 @@ public class ServerThread implements Runnable {
     @Override
     public void run(){
         System.out.println("Welcome :" + userName);
-
         System.out.println("Local Port :" + socket.getLocalPort());
         System.out.println("Server = " + socket.getRemoteSocketAddress() + ":" + socket.getPort());
+
+        networkObserver.addObserver(Game.getInGameControllerInstance());
 
         try{
             PrintWriter serverOut = new PrintWriter(socket.getOutputStream(), false);
@@ -51,6 +53,7 @@ public class ServerThread implements Runnable {
                 if(serverInStream.available() > 0){
                     if(serverIn.hasNextLine()){
                         System.out.println(serverIn.nextLine());
+                        // networkObserver.setMessage("Hans");
                     }
                 }
                 if(hasMessages) {
@@ -59,7 +62,6 @@ public class ServerThread implements Runnable {
                         nextSend = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
-                    //getInGameControllerInstance().walkNetworkClient(-10);
                     serverOut.println(userName + " > " + nextSend);
                     serverOut.flush();
                     }

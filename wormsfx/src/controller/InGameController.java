@@ -15,7 +15,7 @@ import model.Game;
 import model.Rocket;
 import model.WormFX;
 
-public class InGameController {
+public class InGameController implements InGameNetworkInterface{
 
     WormFX activePlayerFX;
     WormFX serverPlayerFX;
@@ -129,21 +129,26 @@ public class InGameController {
         shootAnimation(activePlayerFX);
     }
 
-    /*public void walkNetworkClient(int newVal) {
-        walkAnimation(networkPlayerFX, newVal);
+    @Override
+    public void update(Object test){
+        player1name.setText((String) test);
+    }
+
+    public void walkNetworkClient(int newVal) {
+        walkAnimation(clientPlayerFX, newVal);
     }
 
     public void targetNetworkClient(int newVal) {
-        targetAnimation(networkPlayerFX, newVal);
+        targetAnimation(clientPlayerFX, newVal);
     }
 
     public void jumpNetworkClient() {
-        jumpAnimation(networkPlayerFX);
+        jumpAnimation(clientPlayerFX);
     }
 
     public void shootNetworkClient() {
-        shootAnimation(networkPlayerFX);
-    }*/
+        shootAnimation(clientPlayerFX);
+    }
 
     private void walkAnimation(WormFX activePlayerFX, int newVal) {
 
