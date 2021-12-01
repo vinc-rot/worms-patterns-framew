@@ -13,10 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.ChatClient;
-import model.ChatServer;
-import model.Game;
-import model.Worm;
+import model.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -81,7 +78,6 @@ public class HomeScreenController {
             changeSkin(event);
         });
 
-
     }
 
     public static int getIntFromTextField(TextField tf_Port) {
@@ -107,17 +103,35 @@ public class HomeScreenController {
             //Game.getInstance().setServerPlayer(Game.getInstance().getLoggedInPlayer());
             Game.getInstance().setServerPlayer(new Worm(playerlabel.getText()));
 
+            Thread runServer = new Thread(() -> {
+                while (true) {
+                    Server server = new Server();
+                    try {
+                        server.serverStart();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            runServer.start();
+
+            PeterClient client = new PeterClient(1234,"User1234");
+            Thread ClientThread = new Thread(client);
+            ClientThread.start();
+
+            Game.setPeterClientInstance(client.getInstance());
+
             // ChatServer mit Netzwerk-IP und -Port als Thread starten
-            Thread startServer = new Thread(() -> {
+            /*  Thread startServer = new Thread(() -> {
                 while (true) {
                     ChatServer server = new ChatServer(Game.getInstance().getNetworkPort());
                     server.startServer();
                 }
             });
-            startServer.start();
+            startServer.start();*/
 
             // ChatClient ServerPlayer-Namen und Netzwerk-IP und -Port starten
-            Thread startClient = new Thread(() -> {
+            /*  Thread startClient = new Thread(() -> {
                 while (true) {
                     Scanner scan = new Scanner(System.in);
                     ChatClient client = new ChatClient((activeGame.getServerPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
@@ -125,7 +139,7 @@ public class HomeScreenController {
                 }
             });
 
-            startClient.start();
+            startClient.start();*/
 
         }
 
@@ -140,7 +154,7 @@ public class HomeScreenController {
             Game.getInstance().setClientPlayer(new Worm(playerlabel.getText()));
 
             // Starten des ChatClient mit Spielernamen und Netzwerkinformationen (IP und Port)
-            Thread startClient = new Thread(() -> {
+            /*            Thread startClient = new Thread(() -> {
                 while (true) {
                     Scanner scan = new Scanner(System.in);
                     ChatClient client = new ChatClient((activeGame.getClientPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
@@ -148,11 +162,20 @@ public class HomeScreenController {
                 }
             });
 
-            startClient.start();
-        }
+            startClient.start();*/
+
+            PeterClient client = new PeterClient(1234,"User1234");
+            Thread ClientThread = new Thread(client);
+            ClientThread.start();
+
+            Game.setPeterClientInstance(client.getInstance());
+
+         }
 
         Parent sceneParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/worms.fxml")));
         Scene scene = new Scene(sceneParent);
+
+
 
         //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

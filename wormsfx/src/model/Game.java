@@ -18,6 +18,8 @@ public class Game {
 
     private static InGameController inGameControllerInstance;
 
+    private static PeterClient peterClientInstance;
+
     private Game() {
     }
 
@@ -65,6 +67,14 @@ public class Game {
 
     public static void setInGameControllerInstance(InGameController inGameControllerInstance) {
         Game.inGameControllerInstance = inGameControllerInstance;
+    }
+
+    public static PeterClient getPeterClientInstance() {
+        return peterClientInstance;
+    }
+
+    public static void setPeterClientInstance(PeterClient peterClientInstance) {
+        Game.peterClientInstance = peterClientInstance;
     }
 }
 

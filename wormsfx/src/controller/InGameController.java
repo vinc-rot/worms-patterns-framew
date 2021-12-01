@@ -12,6 +12,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.Game;
+import model.PeterClient;
 import model.Rocket;
 import model.WormFX;
 
@@ -20,10 +21,6 @@ public class InGameController implements InGameNetworkInterface{
     WormFX activePlayerFX;
     WormFX serverPlayerFX;
     WormFX clientPlayerFX;
-
-    public InGameController() {
-
-    }
 
     @FXML
     private ImageView player1;
@@ -69,10 +66,15 @@ public class InGameController implements InGameNetworkInterface{
 
     private ServerThread ServerThread;
 
+    private Game activeGame;
+
+    private PeterClient activeClient;
+
     @FXML
     public void initialize() {
 
-        Game activeGame = Game.getInstance();
+        activeGame = Game.getInstance();
+        activeClient = Game.getPeterClientInstance();
 
         serverPlayerFX = new WormFX(activeGame.getServerPlayer(), player1, player1crossfade, player1rocket, player1);
         clientPlayerFX = new WormFX(activeGame.getClientPlayer(), player2, player2crossfade, player2rocket, player2);
@@ -111,7 +113,10 @@ public class InGameController implements InGameNetworkInterface{
 
     @FXML
     private void walk(int newVal) {
+
         walkAnimation(activePlayerFX, newVal);
+        activeClient.addNextMessage("walk#Client 1");
+
     }
 
     @FXML
@@ -132,6 +137,10 @@ public class InGameController implements InGameNetworkInterface{
     @Override
     public void update(Object test){
         player1name.setText((String) test);
+    }
+
+    public void updateTest(String test){
+        player1name.setText(test);
     }
 
     public void walkNetworkClient(int newVal) {

@@ -1,5 +1,7 @@
 package controller;
 
+import model.PeterClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class NetworkObserver {
         public void setMessage(String networkMessage) {
             this.networkMessage = networkMessage;
             for (InGameNetworkInterface inGameNetworkInterface : this.inGameNetworkInterfaceList) {
+
                 inGameNetworkInterface.update(this.networkMessage);
             }
         }

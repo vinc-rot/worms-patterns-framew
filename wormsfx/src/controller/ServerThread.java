@@ -11,20 +11,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ServerThread implements Runnable {
+public class ServerThread extends NetworkObserver implements Runnable {
+
+    public static ServerThread instance;
     private Socket socket;
     private String userName;
     private boolean isAlived;
     private final LinkedList<String> messagesToSend;
     private boolean hasMessages = false;
-    // Test für Observer
-    NetworkObserver networkObserver = new NetworkObserver();
-
 
     public ServerThread(Socket socket, String userName){
         this.socket = socket;
         this.userName = userName;
         messagesToSend = new LinkedList<String>();
+        instance = this;
     }
 
     public void addNextMessage(String message){
@@ -40,8 +40,6 @@ public class ServerThread implements Runnable {
         System.out.println("Local Port :" + socket.getLocalPort());
         System.out.println("Server = " + socket.getRemoteSocketAddress() + ":" + socket.getPort());
 
-        networkObserver.addObserver(Game.getInGameControllerInstance());
-
         try{
             PrintWriter serverOut = new PrintWriter(socket.getOutputStream(), false);
             InputStream serverInStream = socket.getInputStream();
@@ -53,7 +51,8 @@ public class ServerThread implements Runnable {
                 if(serverInStream.available() > 0){
                     if(serverIn.hasNextLine()){
                         System.out.println(serverIn.nextLine());
-                        // networkObserver.setMessage("Hans");
+                        setMessage("Hans");
+
                     }
                 }
                 if(hasMessages) {
