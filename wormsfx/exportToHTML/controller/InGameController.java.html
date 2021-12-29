@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>InGameController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #cc7832;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+InGameController.java</font>
+</center></td></tr></table>
+<pre>
+
+    <span class="s1">private </span><span class="s0">PeterClient activeClient</span><span class="s1">;</span>
+
+    <span class="s0">@FXML</span>
+    <span class="s1">public void </span><span class="s0">initialize() {</span>
+
+        <span class="s0">activeGame = Game.getInstance()</span><span class="s1">;</span>
+        <span class="s0">activeClient = Game.getPeterClientInstance()</span><span class="s1">;</span>
+
+        <span class="s0">serverPlayerFX = </span><span class="s1">new </span><span class="s0">WormFX(activeGame.getServerPlayer()</span><span class="s1">, </span><span class="s0">player1</span><span class="s1">, </span><span class="s0">player1crossfade</span><span class="s1">, </span><span class="s0">player1rocket</span><span class="s1">, </span><span class="s0">player1)</span><span class="s1">;</span>
+        <span class="s0">clientPlayerFX = </span><span class="s1">new </span><span class="s0">WormFX(activeGame.getClientPlayer()</span><span class="s1">, </span><span class="s0">player2</span><span class="s1">, </span><span class="s0">player2crossfade</span><span class="s1">, </span><span class="s0">player2rocket</span><span class="s1">, </span><span class="s0">player2)</span><span class="s1">;</span>
+
+        <span class="s0">player1name.setText(activeGame.getServerPlayer().getWormName())</span><span class="s1">;</span>
+        <span class="s0">player2name.setText(activeGame.getClientPlayer().getWormName())</span><span class="s1">;</span>
+
+        <span class="s0">player1lifepoints.setText(String.valueOf(activeGame.getServerPlayer().getLifePoints()))</span><span class="s1">;</span>
+        <span class="s0">player2lifepoints.setText(String.valueOf(activeGame.getClientPlayer().getLifePoints()))</span><span class="s1">;</span>
+
+        <span class="s1">if </span><span class="s0">(player1name.getText() != </span><span class="s2">&quot;ServerPlayer&quot; </span><span class="s0">&amp;&amp; player2name.getText() == </span><span class="s2">&quot;ClientPlayer&quot;</span><span class="s0">) {</span>
+            <span class="s0">activePlayerFX = serverPlayerFX</span><span class="s1">;</span>
+        <span class="s0">} </span><span class="s1">else if </span><span class="s0">(player1name.getText() == </span><span class="s2">&quot;ServerPlayer&quot; </span><span class="s0">&amp;&amp; player2name.getText() != </span><span class="s2">&quot;ClientPlayer&quot;</span><span class="s0">){</span>
+            <span class="s0">activePlayerFX = clientPlayerFX</span><span class="s1">;</span>
+        <span class="s0">}</span>
+    <span class="s0">}</span>
+
+    <span class="s0">@FXML</span>
+    <span class="s1">private void </span><span class="s0">handleKeyPressed() {</span>
+        <span class="s0">anchorPane.getScene().setOnKeyPressed(event -&gt; {</span>
+            <span class="s1">switch </span><span class="s0">(event.getCode()) {</span>
+                <span class="s1">case </span><span class="s0">UP:</span>
+                <span class="s1">case </span><span class="s0">KP_UP: target(+</span><span class="s3">10</span><span class="s0">)</span><span class="s1">; break;</span>
+                <span class="s1">case </span><span class="s0">DOWN:</span>
+                <span class="s1">case </span><span class="s0">KP_DOWN: target(-</span><span class="s3">10</span><span class="s0">)</span><span class="s1">; break;</span>
+                <span class="s1">case </span><span class="s0">RIGHT:</span>
+                <span class="s1">case </span><span class="s0">KP_RIGHT: walk(+</span><span class="s3">20</span><span class="s0">)</span><span class="s1">; break;</span>
+                <span class="s1">case </span><span class="s0">LEFT:</span>
+                <span class="s1">case </span><span class="s0">KP_LEFT: walk(-</span><span class="s3">20</span><span class="s0">)</span><span class="s1">; break;</span>
+                <span class="s1">case </span><span class="s0">SPACE: shoot()</span><span class="s1">; break;</span>
+                <span class="s1">case </span><span class="s0">ENTER: jump()</span><span class="s1">; break;</span>
+                <span class="s1">default</span><span class="s0">: </span><span class="s1">break;</span>
+            <span class="s0">}</span>
+        <span class="s0">})</span><span class="s1">;</span>
+    <span class="s0">}</span>
+
+    <span class="s0">@FXML</span>
+    <span class="s1">private void </span><span class="s0">walk(</span><span class="s1">int </span><span class="s0">newVal) {</span>
+
+        <span class="s0">walkAnimation(activePlayerFX</span><span class="s1">, </span><span class="s0">newVal)</span><span class="s1">;</span>
+        <span class="s0">activeClient.addNextMessage(</span><span class="s2">&quot;walk#Client 1&quot;</span><span class="s0">)</span><span class="s1">;</span>
+
+    <span class="s0">}</span></pre>
+</body>
+</html>
