@@ -1,19 +1,10 @@
 package model;
 
-import controller.InGameNetworkInterface;
-import controller.NetworkObserver;
-import javafx.beans.InvalidationListener;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.LinkedList;
-import java.util.Observer;
 import java.util.Scanner;
-
-import javafx.beans.Observable;
-import model.Game;
 
 public class PeterClient implements Runnable{
 
@@ -35,6 +26,7 @@ public class PeterClient implements Runnable{
     }
 
     public void addNextMessage(String message){
+        System.out.println("OUT: ADD NEXT MESSAGE");
         synchronized (messagesToSend){
             hasMessages = true;
             messagesToSend.push(message);
@@ -57,20 +49,22 @@ public class PeterClient implements Runnable{
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
                 System.out.println("OUT: VOR WHILE");
+
                 while(true){
-                    System.out.println(hasMessages);
                     if(hasMessages) {
+                        System.out.println(hasMessages);
                         String nextSend = "";
                         synchronized (messagesToSend) {
                             nextSend = messagesToSend.pop();
                             hasMessages = !messagesToSend.isEmpty();
                         }
                         System.out.println(hasMessages+"OUT: IN WHILE SCHLEIFE");
-                        //dos.writeUTF("Hallo");
+                        dos.writeUTF(nextSend);
                     }
-                    // String msg = dis.readUTF();
-                    // System.out.println(msg);
+                    //String msg = dis.readUTF();
+                    //System.out.println(msg);
 
                 }
             }
