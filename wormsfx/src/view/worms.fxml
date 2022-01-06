@@ -17,6 +17,15 @@
                   </ImageView>
          </children>
       </VBox>
+      <VBox alignment="CENTER" layoutX="362.0" layoutY="334.0" prefHeight="100.0" prefWidth="300.0">
+         <children>
+            <Text fx:id="gameMessage" fill="#df0000" strokeType="OUTSIDE" strokeWidth="0.0" >
+               <font>
+                  <Font name="Droid Sans Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
 <!--      Player 1 + Punkte-->
       <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="20.0" layoutY="35.0" prefHeight="50.0" prefWidth="150.0">
          <children>
@@ -104,6 +113,20 @@
             <Image url="@../resources/rocket.png" />
          </image>
       </ImageView>
-      <ImageView id="player1icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="player1explosion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../resources/explosion_cut.png" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="player2explosion" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../resources/explosion_cut.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

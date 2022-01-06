@@ -1,8 +1,13 @@
 package controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -10,17 +15,14 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Game;
-import model.PeterClient;
-import model.Rocket;
-import model.WormFX;
+import model.*;
 
-public class InGameController implements InGameNetworkInterface{
+import java.util.EventObject;
+import java.util.StringTokenizer;
 
-    WormFX activePlayerFX;
-    WormFX serverPlayerFX;
-    WormFX clientPlayerFX;
+public class InGameController implements NetworkInterface {
 
     @FXML
     private ImageView player1;
@@ -41,6 +43,12 @@ public class InGameController implements InGameNetworkInterface{
     private ImageView player2rocket;
 
     @FXML
+    private ImageView player1explosion;
+
+    @FXML
+    private ImageView player2explosion;
+
+    @FXML
     private Text player1lifepoints;
 
     @FXML
@@ -51,6 +59,9 @@ public class InGameController implements InGameNetworkInterface{
 
     @FXML
     private Text player2name;
+
+    @FXML
+    private Text gameMessage;
 
     @FXML
     private ImageView player1icon;
@@ -64,32 +75,51 @@ public class InGameController implements InGameNetworkInterface{
     @FXML
     private AnchorPane anchorPane;
 
-    private ServerThread ServerThread;
-
     private Game activeGame;
 
-    private PeterClient activeClient;
+    private Client activeClient;
+
+    private WormFX activePlayerFX;
+    private WormFX networkPlayerFX;
 
     @FXML
     public void initialize() {
 
+        // Client + Game Instanzen werden initialisiert
         activeGame = Game.getInstance();
         activeClient = Game.getPeterClientInstance();
 
-        serverPlayerFX = new WormFX(activeGame.getServerPlayer(), player1, player1crossfade, player1rocket, player1);
-        clientPlayerFX = new WormFX(activeGame.getClientPlayer(), player2, player2crossfade, player2rocket, player2);
+        // Zusammenfassen der JavaFX-Objekte für Player 1 + 2
+        WormFX player1FX = new WormFX(new Worm(), player1, player1crossfade, player1rocket,
+                player1, player1explosion, player1name, player1lifepoints);
 
-        player1name.setText(activeGame.getServerPlayer().getWormName());
-        player2name.setText(activeGame.getClientPlayer().getWormName());
+        WormFX player2FX = new WormFX(new Worm(), player2, player2crossfade, player2rocket,
+                player2, player2explosion, player2name, player2lifepoints);
 
-        player1lifepoints.setText(String.valueOf(activeGame.getServerPlayer().getLifePoints()));
-        player2lifepoints.setText(String.valueOf(activeGame.getClientPlayer().getLifePoints()));
+        // Warten auf den Netzwerkspieler
+        if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
+        {
+            gameMessage.setText("[S] für Synchronisierung ");
 
-        if (player1name.getText() != "ServerPlayer" && player2name.getText() == "ClientPlayer") {
-            activePlayerFX = serverPlayerFX;
-        } else if (player1name.getText() == "ServerPlayer" && player2name.getText() != "ClientPlayer"){
-            activePlayerFX = clientPlayerFX;
+            activePlayerFX = player1FX;
+            networkPlayerFX = player2FX;
+
         }
+        else
+        {
+            gameMessage.setText("[S] für Synchronisierng ");
+
+            activePlayerFX = player2FX;
+            networkPlayerFX = player1FX;
+
+        }
+
+        activePlayerFX.setWorm(activeGame.getClientPlayerWorm());
+        networkPlayerFX.setWorm(activeGame.getServerPlayerWorm());
+
+        setPlayerName(activePlayerFX, activePlayerFX.getWorm().getWormName());
+        setLifePoints(activePlayerFX, activePlayerFX.getWorm().getLifePoints());
+
     }
 
     @FXML
@@ -106,137 +136,204 @@ public class InGameController implements InGameNetworkInterface{
                 case KP_LEFT: walk(-20); break;
                 case SPACE: shoot(); break;
                 case ENTER: jump(); break;
+                case S: syncGame(); break;
+                case ESCAPE: quit(); break;
                 default: break;
             }
         });
     }
 
+    @Override
+    public void update(Object incomingMessage){
+
+        System.out.println("CLIENT: " + (String) incomingMessage);
+
+        StringTokenizer st = new StringTokenizer((String) incomingMessage, "#");
+        String msgType = st.nextToken();
+
+        switch(msgType) {
+            case "walk":  walkAnimation(networkPlayerFX, Integer.parseInt(st.nextToken())); break;
+            case "target":  targetAnimation(networkPlayerFX, Integer.parseInt(st.nextToken())); break;
+            case "jump":  jumpAnimation(networkPlayerFX); break;
+            case "shoot": shootAnimation(networkPlayerFX); break;
+            case "lifepoints": setLifePoints(networkPlayerFX, Integer.parseInt(st.nextToken()));break;
+            case "playername": setPlayerName(networkPlayerFX, st.nextToken()); break;
+            case "playerskin": break;
+            default: break;
+        }
+
+    }
+
     @FXML
     private void walk(int newVal) {
-
-        walkAnimation(activePlayerFX, newVal);
-        activeClient.addNextMessage("walk#Client 1");
-
+        if (activeGame.isGameIsRunning() & !activePlayerFX.isWalkActive()) {
+            activePlayerFX.setWalkActive(true);
+            walkAnimation(activePlayerFX, newVal);
+            activeClient.addNextMessage("walk#" + newVal + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        }
     }
 
     @FXML
     private void target(int newVal) {
-        targetAnimation(activePlayerFX, newVal);
+        if (activeGame.isGameIsRunning() & !activePlayerFX.isTargetActive()) {
+            activePlayerFX.setTargetActive(true);
+            targetAnimation(activePlayerFX, newVal);
+            activeClient.addNextMessage("target#" + newVal + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        }
     }
 
     @FXML
     private void jump() {
-        jumpAnimation(activePlayerFX);
+        if (activeGame.isGameIsRunning() & !activePlayerFX.isTargetActive()) {
+            activePlayerFX.setJumpActive(true);
+            jumpAnimation(activePlayerFX);
+            activeClient.addNextMessage("jump#" + " " + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        }
     }
 
     @FXML
     private void shoot() {
-        shootAnimation(activePlayerFX);
+        if (activeGame.isGameIsRunning() & !activePlayerFX.isRocketActive()) {
+            activePlayerFX.setRocketActive(true);
+            shootAnimation(activePlayerFX);
+            activeClient.addNextMessage("shoot#" + " " + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        }
     }
 
-    @Override
-    public void update(Object test){
-        player1name.setText((String) test);
-    }
-
-    public void updateTest(String test){
-        player1name.setText(test);
-    }
-
-    public void walkNetworkClient(int newVal) {
-        walkAnimation(clientPlayerFX, newVal);
-    }
-
-    public void targetNetworkClient(int newVal) {
-        targetAnimation(clientPlayerFX, newVal);
-    }
-
-    public void jumpNetworkClient() {
-        jumpAnimation(clientPlayerFX);
-    }
-
-    public void shootNetworkClient() {
-        shootAnimation(clientPlayerFX);
-    }
-
-    private void walkAnimation(WormFX activePlayerFX, int newVal) {
-
+    private void walkAnimation(WormFX playerFX, int newVal) {
         TranslateTransition ttWorm = new TranslateTransition(
                 Duration.seconds(0.1),
-                activePlayerFX.getWormLogo());
+                playerFX.getWormLogo());
 
         TranslateTransition ttTarget = new TranslateTransition(
                 Duration.seconds(0.1),
-                activePlayerFX.getWormTarget());
+                playerFX.getWormTarget());
 
-        ttWorm.setFromX(activePlayerFX.getWormImage().getTranslateX());
-        ttTarget.setFromX(activePlayerFX.getWormTarget().getTranslateX());
+        ttWorm.setFromX(playerFX.getWormImage().getTranslateX());
+        ttTarget.setFromX(playerFX.getWormTarget().getTranslateX());
 
         int newValRotationAddup = 0;
 
-        if (newVal > 0 && activePlayerFX.getWormImage().getRotate() == 180 ) {
-            activePlayerFX.getWormImage().setRotate(0);
+        if (newVal > 0 && playerFX.getWormImage().getRotate() == 180 ) {
+            playerFX.getWormImage().setRotate(0);
             newValRotationAddup = 40;
         }
-        else if (newVal > 0 && activePlayerFX.getWormImage().getRotate() == 0){
-            activePlayerFX.getWormImage().setRotate(0);
+        else if (newVal > 0 && playerFX.getWormImage().getRotate() == 0){
+            playerFX.getWormImage().setRotate(0);
             newValRotationAddup = 40;
         }
-        else if (newVal < 0 && activePlayerFX.getWormImage().getRotate() == 180) {
-            activePlayerFX.getWormImage().setRotate(180);
+        else if (newVal < 0 && playerFX.getWormImage().getRotate() == 180) {
+            playerFX.getWormImage().setRotate(180);
             newValRotationAddup = -40;
         }
-        else if (newVal < 0 && activePlayerFX.getWormImage().getRotate() == 0) {
-            activePlayerFX.getWormImage().setRotate(180);
+        else if (newVal < 0 && playerFX.getWormImage().getRotate() == 0) {
+            playerFX.getWormImage().setRotate(180);
             newValRotationAddup = -40;
         }
 
-        ttTarget.setToX(activePlayerFX.getWormImage().getTranslateX()+newVal+newValRotationAddup);
-        ttWorm.setToX(activePlayerFX.getWormImage().getTranslateX()+newVal);
+        ttTarget.setToX(playerFX.getWormImage().getTranslateX()+newVal+newValRotationAddup);
+        ttWorm.setToX(playerFX.getWormImage().getTranslateX()+newVal);
+        ttWorm.setOnFinished(event -> playerFX.setWalkActive(false));
 
         ttTarget.play();
         ttWorm.play();
 
     }
 
-    private void targetAnimation(WormFX activePlayerFX, int newVal) {
-
+    private void targetAnimation(WormFX playerFX, int newVal) {
         TranslateTransition ttTarget = new TranslateTransition(
-                Duration.seconds(0.1), activePlayerFX.getWormTarget());
+                Duration.seconds(0.1), playerFX.getWormTarget());
 
-        ttTarget.setFromY(activePlayerFX.getWormTarget().getTranslateY());
-        ttTarget.setToY(activePlayerFX.getWormTarget().getTranslateY()+newVal);
+        ttTarget.setFromY(playerFX.getWormTarget().getTranslateY());
+        ttTarget.setToY(playerFX.getWormTarget().getTranslateY()+newVal);
+
+        ttTarget.setOnFinished(event -> playerFX.setTargetActive(false));
+
         ttTarget.play();
     }
 
-    private void jumpAnimation(WormFX activePlayerFX) {
-        TranslateTransition ttTarget = new TranslateTransition(
-                Duration.seconds(0.1), activePlayerFX.getWormImage());
 
-        ttTarget.setFromY(activePlayerFX.getWormImage().getTranslateY());
-        ttTarget.setToY(activePlayerFX.getWormImage().getTranslateY()-40);
+    private void jumpAnimation(WormFX playerFX) {
+        TranslateTransition ttTarget = new TranslateTransition(
+                Duration.seconds(0.1), playerFX.getWormImage());
+
+        ttTarget.setFromY(playerFX.getWormImage().getTranslateY());
+        ttTarget.setToY(playerFX.getWormImage().getTranslateY()-40);
         ttTarget.setAutoReverse(true);
+        ttTarget.setOnFinished(event -> playerFX.setJumpActive(false));
         ttTarget.play();
     }
 
 
-    private void shootAnimation(WormFX activePlayerFX) {
-        double activeWormX = activePlayerFX.getWormImage().getX()+activePlayerFX.getWormImage().getTranslateX();
-        double activeWormY = activePlayerFX.getWormImage().getY()+activePlayerFX.getWormImage().getTranslateY();
+    private void shootAnimation(WormFX playerFX) {
+        double activeWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
+        double activeWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
+        int shootingDirection = 1;
 
-        activePlayerFX.getWormRocket().setVisible(true);
+        playerFX.getWormRocket().setVisible(true);
 
-        Rocket activeRocket = new Rocket(100, Math.atan(activePlayerFX.getWormTarget().getTranslateY()/40),9.81, borderPane.getHeight()-activeWormY);
+        Rocket activeRocket = new Rocket(100, Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)),
+                9.81, borderPane.getHeight()-activeWormY);
+
+/*        System.out.println("Angle:" + Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)) + " ,X_Peak: " +
+                activeRocket.rocketPeakX() + " ,Y_Peak: " + activeRocket.rocketPeakY() + " " +
+                ",X_End:" + activeRocket.rocketEndX() );*/
+
+        if (playerFX.getWormImage().getRotate() == 180)
+            shootingDirection = -1;
+
+        double bezierPointX = activeWormX + activeRocket.rocketPeakX()*shootingDirection;
+        double bezierPointY = borderPane.getHeight() - activeRocket.rocketBezierY();
+
+        FadeTransition ftExplosion = new FadeTransition(
+                Duration.seconds(1.0), playerFX.getWormExplosion());
+        ftExplosion.setFromValue(1.0);
+        ftExplosion.setToValue(0.0);
 
         Path path = new Path();
         path.getElements().add(new MoveTo(activeWormX,activeWormY));
-        path.getElements().add(new CubicCurveTo(activeWormX,activeWormY, activeWormX+activeRocket.rocketPeakX(), borderPane.getHeight()-activeRocket.rocketPeakY(),0, borderPane.getHeight()));
+        path.getElements().add(new CubicCurveTo(bezierPointX, bezierPointY,
+                bezierPointX, bezierPointY, activeWormX + activeRocket.rocketEndX()*shootingDirection, borderPane.getHeight()));
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(activeRocket.rocketTime()));
+        pathTransition.setDuration(Duration.millis(activeRocket.rocketTime()*100));
         pathTransition.setPath(path);
-        pathTransition.setNode(activePlayerFX.getWormRocket());
+        pathTransition.setNode(playerFX.getWormRocket());
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setOnFinished(event -> activePlayerFX.getWormRocket().setVisible(false));
+        pathTransition.setOnFinished(event -> { playerFX.getWormRocket().setVisible(false);
+                                                playerFX.setRocketActive(false);
+                                                playerFX.getWormExplosion().setVisible(true);
+                                                ftExplosion.play();}
+                                                );
         pathTransition.play();
     }
+
+    private void setLifePoints(WormFX playerFX, int newVal) {
+        playerFX.getWorm().setLifePoints(newVal);
+        playerFX.getWormLifePoints().setText(String.valueOf(newVal));
+    }
+
+    private void setPlayerName(WormFX playerFX, String newName) {
+        playerFX.getWorm().setWormName(newName);
+        playerFX.getWormName().setText(String.valueOf(newName));
+    }
+
+    public void syncGame()
+    {
+        gameMessage.setText("");
+        activeClient.addNextMessage("lifepoints#" + activePlayerFX.getWorm().getLifePoints() +
+                "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        activeClient.addNextMessage("playername#" + activePlayerFX.getWorm().getWormName() +
+                "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        activeClient.addNextMessage("playerskin#" + activePlayerFX.getWorm().getWormSkin() +
+                "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        activeGame.setGameIsRunning(true);
+
+    }
+
+    public void quit()
+    {
+        gameMessage.setText("");
+        activeGame.setGameIsRunning(true);
+    }
+
 }

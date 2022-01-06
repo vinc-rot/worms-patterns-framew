@@ -12,24 +12,21 @@ import java.util.Vector;
 // It contains two classes : Server and ClientHandler
 // Save file as Server.java
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
 
 // Server class
 public class Server
 {
 
     // Vector to store active clients
-    static Vector<ClientHandler> ar = new Vector<>();
+    static Vector<ServerThreadHandler> ar = new Vector<>();
 
     // counter for clients
-    static int i = 0;
+    static int i = 1;
 
-    public void serverStart() throws IOException
+    public void serverStart(int port) throws IOException
     {
         // server is listening on port 1234
-        ServerSocket ss = new ServerSocket(1234);
+        ServerSocket ss = new ServerSocket(port);
 
         Socket s;
 
@@ -49,7 +46,7 @@ public class Server
             System.out.println("Creating a new handler for this client...");
 
             // Create a new handler object for handling this request.
-            ClientHandler mtch = new ClientHandler(s,"client " + i, dis, dos);
+            ServerThreadHandler mtch = new ServerThreadHandler(s,"player" + i, dis, dos);
 
             // Create a new Thread with this object.
             Thread t = new Thread(mtch);

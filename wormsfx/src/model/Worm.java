@@ -6,35 +6,20 @@ public class Worm {
 
     public static final int WORM_SKINS = 23;
     private String wormName;
-    private int lifePoints;
-    private int posX;
-    private int posY;
+    private int lifePoints = 100;
+    private int playerNumber = 0;
     private int wormSkin = 0;
     private boolean changed = false;
 
+    public Worm() {
+
+        setWormSkin(new Random().nextInt(WORM_SKINS));
+    }
 
     public Worm(String wormName) {
         this.wormName = wormName;
         setWormSkin(new Random().nextInt(WORM_SKINS));
     }
-
-    /**
-     * creates a worm with the given data.
-     *
-     * @param wormName   Name of Worm
-     * @param lifePoints Life Points of Worm
-     * @param posX       x-Position of Worm
-     * @param posY       y-Position of Worm
-     */
-
-    public Worm(String wormName, int lifePoints, int posX, int posY, int skin) {
-        this.wormName = wormName;
-        this.posX = posX;
-        this.posY = posY;
-        this.lifePoints = lifePoints;
-        setWormSkin(skin);
-    }
-
 
     public String getWormName() {
         return wormName;
@@ -52,20 +37,12 @@ public class Worm {
         this.lifePoints = lifePoints;
     }
 
-    public int getPosX() {
-        return posX;
+    public int getPlayerNumber() {
+        return playerNumber;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
     }
 
     public int getWormSkin() {

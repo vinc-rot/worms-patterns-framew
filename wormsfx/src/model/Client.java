@@ -1,72 +1,75 @@
 package model;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import controller.NetworkObserver;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
+import java.util.LinkedList;
 
-public class Client
+public class Client implements Runnable{
 
-{
-    final static int ServerPort = 1234;
+    public static Client instance;
+    private int ServerPort;
+    private String ServerIP;
+    private String userName;
+    private LinkedList<String> messagesToSend;
+    private volatile boolean hasMessages = false;
 
-    public void clientStart() throws UnknownHostException, IOException
+    public Client(int ServerPort, String ServerIP, String userName){
+        this.userName = userName;
+        messagesToSend = new LinkedList<String>();
+        this.ServerPort = ServerPort;
+        this.ServerIP = ServerIP;
+        instance = this;
+    }
+
+    public static Client getInstance() {
+        return instance;
+    }
+
+    public void addNextMessage(String message){
+        synchronized (messagesToSend){
+            hasMessages = true;
+            messagesToSend.push(message);
+        }
+    }
+
+    @Override
+    public void run()
     {
-        Scanner scn = new Scanner(System.in);
+            try{
+                // establish the connection
+                Socket s = new Socket(ServerIP, ServerPort);
 
-        // getting localhost ip
-        InetAddress ip = InetAddress.getByName("localhost");
+                // obtaining input and out streams
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
-        // establish the connection
-        Socket s = new Socket(ip, ServerPort);
+                // start des Network Observers
+                NetworkObserver no = new NetworkObserver();
+                no.addObserver(Game.getInGameControllerInstance());
 
-        // obtaining input and out streams
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-
-        // sendMessage thread
-        Thread sendMessage = new Thread(new Runnable()
-        {
-            @Override
-            public void run() {
-                while (true) {
-
-                    // read the message to deliver.
-                    String msg = scn.nextLine();
-
-                    try {
-                        // write on the output stream
-                        dos.writeUTF(msg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        // readMessage thread
-        Thread readMessage = new Thread(new Runnable()
-        {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        // read the message sent to this client
+                while(true){
+                    if(dis.available() > 0){
                         String msg = dis.readUTF();
-                        System.out.println(msg);
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
+                        no.setMessage(msg);
+                    }
+                    if(hasMessages) {
+                        String nextSend = "";
+                        synchronized (messagesToSend) {
+                            nextSend = messagesToSend.pop();
+                            hasMessages = !messagesToSend.isEmpty();
+                        }
+                        dos.writeUTF(nextSend);
                     }
                 }
             }
-        });
-
-        sendMessage.start();
-        readMessage.start();
+            catch(IOException ex){
+                ex.printStackTrace();
+                System.out.println("Failure on Connect");
+            }
 
     }
+
 }

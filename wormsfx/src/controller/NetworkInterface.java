@@ -1,6 +1,6 @@
 package controller;
 
-public interface InGameNetworkInterface {
+public interface NetworkInterface {
 
     public void update(Object o);
 

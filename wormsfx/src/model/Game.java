@@ -4,21 +4,21 @@ import controller.InGameController;
 
 public class Game {
 
-    private Worm loggedInPlayer;
+    private Worm serverPlayerWorm;
 
-    private Worm serverPlayer;
-
-    private Worm clientPlayer;
+    private Worm clientPlayerWorm;
 
     private String networkIP;
 
     private int networkPort;
 
+    private boolean gameIsRunning = false;
+
     private static Game gameInstance;
 
     private static InGameController inGameControllerInstance;
 
-    private static PeterClient peterClientInstance;
+    private static Client clientInstance;
 
     private Game() {
     }
@@ -29,28 +29,20 @@ public class Game {
         return gameInstance;
     }
 
-    public Worm getLoggedInPlayer() {
-        return loggedInPlayer;
+    public Worm getServerPlayerWorm() {
+        return serverPlayerWorm;
     }
 
-    public void setLoggedInPlayer(Worm loggedInPlayer) {
-        this.loggedInPlayer = loggedInPlayer;
+    public void setServerPlayerWorm(Worm serverPlayerWorm) {
+        this.serverPlayerWorm = serverPlayerWorm;
     }
 
-    public Worm getServerPlayer() {
-        return serverPlayer;
+    public Worm getClientPlayerWorm() {
+        return clientPlayerWorm;
     }
 
-    public void setServerPlayer(Worm serverPlayer) {
-        this.serverPlayer = serverPlayer;
-    }
-
-    public Worm getClientPlayer() {
-        return clientPlayer;
-    }
-
-    public void setClientPlayer(Worm clientPlayer) {
-        this.clientPlayer = clientPlayer;
+    public void setClientPlayerWorm(Worm clientPlayerWorm) {
+        this.clientPlayerWorm = clientPlayerWorm;
     }
 
     public String getNetworkIP() { return networkIP; }
@@ -69,12 +61,20 @@ public class Game {
         Game.inGameControllerInstance = inGameControllerInstance;
     }
 
-    public static PeterClient getPeterClientInstance() {
-        return peterClientInstance;
+    public static Client getPeterClientInstance() {
+        return clientInstance;
     }
 
-    public static void setPeterClientInstance(PeterClient peterClientInstance) {
-        Game.peterClientInstance = peterClientInstance;
+    public static void setPeterClientInstance(Client clientInstance) {
+        Game.clientInstance = clientInstance;
+    }
+
+    public boolean isGameIsRunning() {
+        return gameIsRunning;
+    }
+
+    public void setGameIsRunning(boolean gameIsRunning) {
+        this.gameIsRunning = gameIsRunning;
     }
 }
 

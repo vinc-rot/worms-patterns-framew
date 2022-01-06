@@ -21,25 +21,37 @@ public class Rocket {
         constant2 = (velocityZero*velocityZero) / gravity;
     }
 
-    public int rocketTime()
+    public double rocketTime()
     {
-        return (int) (1000 * (velocityZero / gravity) * (sin(angleZero) + sqrt(sin(angleZero) * sin(angleZero) + constant1)));
+        return ((velocityZero / gravity) * (sin(angleZero) + sqrt(sin(angleZero) * sin(angleZero) + constant1)));
     }
 
-    public int rocketPeakX()
+    public double rocketPeakX()
     {
 
-        return (int) ((constant2/2) * sin(2*angleZero));
+        return ((constant2/2) * sin(2*angleZero));
     }
 
-    public int rocketPeakY()
+    public double rocketPeakY()
     {
-        return (int) ((constant2/2) * (sin(angleZero)*sin(angleZero) + constant1) );
+        return ((constant2/2) * (sin(angleZero)*sin(angleZero) + constant1) );
     }
 
-    public int rocketEndX()
+    public double rocketEndX()
     {
-        return (int) (constant2 * cos(angleZero) * ( sin(angleZero) + sqrt( sin(angleZero) * sin(angleZero) + constant1 ) ) );
+        return (constant2 * cos(angleZero) * ( sin(angleZero) + sqrt( sin(angleZero) * sin(angleZero) + constant1 ) ) );
+    }
+
+    public double rocketPosY(double posX)
+    {
+        return ( -1 * gravity / (2*velocityZero*velocityZero*cos(angleZero)*cos(angleZero)) * posX * posX +
+                tan(angleZero) + posX + startPointY);
+    }
+
+    public double rocketBezierY()
+    {
+        return ((gravity*rocketTime() - velocityZero * cos(angleZero)) / velocityZero * sin(angleZero)) *
+        (constant2 * cos(angleZero) * ( sin(angleZero) + sqrt( sin(angleZero) * sin(angleZero) ) ) ) / 2;
     }
 
 }

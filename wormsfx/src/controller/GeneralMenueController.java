@@ -33,9 +33,11 @@ public class GeneralMenueController {
     }
     public void changeScreenLogin(ActionEvent event) throws IOException {
 
-        Game.getInstance().setLoggedInPlayer(new Worm(playername.getText(), 100, 200, 100, 10));
-        Game.getInstance().setServerPlayer(new Worm("ServerPlayer", 100, 200, 100, 11));
-        Game.getInstance().setClientPlayer(new Worm("ClientPlayer", 100, 200, 100, 12));
+        // Game Objekt wird angelegt + Client Worm initalisisiert
+        Game.getInstance().setClientPlayerWorm(new Worm(playername.getText()));
+
+        // Server Player Worm wird initialisiert
+        Game.getInstance().setServerPlayerWorm(new Worm());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
         Parent sceneParent = loader.load();

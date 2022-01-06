@@ -19,15 +19,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class HomeScreenController {
 
     public HomeScreenController() {
-
-
     }
-
 
     @FXML
     private Label playerlabel;
@@ -62,9 +58,10 @@ public class HomeScreenController {
 
     @FXML
     public void initialize() throws UnknownHostException {
+        // Game-Instanz wird auf Variable activeGame gesetzt
         activeGame = Game.getInstance();
 
-        playerlabel.setText(activeGame.getLoggedInPlayer().getWormName());
+        playerlabel.setText(activeGame.getClientPlayerWorm().getWormName());
 
         ToggleGroup group = new ToggleGroup();
         rb_CreateGame.setToggleGroup(group);
@@ -88,94 +85,58 @@ public class HomeScreenController {
     public void changeScreenButtonPushed(ActionEvent event) throws IOException {
 
         //Setzen des Netzwerk-IP und -Port in der Spieleumgebung
-        Game.getInstance().setNetworkIP(tf_IP.getText());
-        Game.getInstance().setNetworkPort(getIntFromTextField(tf_Port));
+        activeGame.setNetworkIP(tf_IP.getText());
+        activeGame.setNetworkPort(getIntFromTextField(tf_Port));
 
-        /* Wenn RadioButton "CreateGame" ausgewählt ist, dann wird
-           - der LoggedInPlayer zum ServerPlayer
-           - der ChatServer mit Netzwerk-IP und gewähltem Port und
-           - der ChatClient mit dem ServerPlayer-Namen, der Netzwerk-IP und -Port gestartet
-        */
+        //Wenn CreateGame ausgewählt -> Server wird gestartet + Client wird Player1
 
         if (rb_CreateGame.isSelected()) {
 
-            // LoggedInPlayer wird zum ServerPlayer
-            //Game.getInstance().setServerPlayer(Game.getInstance().getLoggedInPlayer());
-            Game.getInstance().setServerPlayer(new Worm(playerlabel.getText()));
+            // Client wird Player1
+            activeGame.getClientPlayerWorm().setPlayerNumber(1);
 
+            // ServerPlayer wird Player2
+            activeGame.getServerPlayerWorm().setPlayerNumber(2);
+
+            // Server wird gestartet
             Thread runServer = new Thread(() -> {
                 while (true) {
                     Server server = new Server();
                     try {
-                        server.serverStart();
+                        server.serverStart(activeGame.getNetworkPort());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             });
             runServer.start();
-
-            PeterClient client = new PeterClient(1234,"User1234");
-            Thread ClientThread = new Thread(client);
-            ClientThread.start();
-
-            Game.setPeterClientInstance(client.getInstance());
-
-            // ChatServer mit Netzwerk-IP und -Port als Thread starten
-            /*  Thread startServer = new Thread(() -> {
-                while (true) {
-                    ChatServer server = new ChatServer(Game.getInstance().getNetworkPort());
-                    server.startServer();
-                }
-            });
-            startServer.start();*/
-
-            // ChatClient ServerPlayer-Namen und Netzwerk-IP und -Port starten
-            /*  Thread startClient = new Thread(() -> {
-                while (true) {
-                    Scanner scan = new Scanner(System.in);
-                    ChatClient client = new ChatClient((activeGame.getServerPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
-                    client.startClient(scan);
-                }
-            });
-
-            startClient.start();*/
-
         }
-
-        /* Wenn RadioButton "JoinGame" ausgewählt ist, dann wird
-           - der LoggedInPlayer zum ClientPlayer und
-           - der ChatClient mit dem ClientPlayer-Namen, der Netzwerk-IP und -Port gestartet
-        */
 
         if (rb_JoinGame.isSelected()) {
 
-            //Game.getInstance().setClientPlayer(Game.getInstance().getLoggedInPlayer());
-            Game.getInstance().setClientPlayer(new Worm(playerlabel.getText()));
+            // Client wird Player2
+            activeGame.getClientPlayerWorm().setPlayerNumber(2);
 
-            // Starten des ChatClient mit Spielernamen und Netzwerkinformationen (IP und Port)
-            /*            Thread startClient = new Thread(() -> {
-                while (true) {
-                    Scanner scan = new Scanner(System.in);
-                    ChatClient client = new ChatClient((activeGame.getClientPlayer().getWormName()), Game.getInstance().getNetworkIP(), Game.getInstance().getNetworkPort());
-                    client.startClient(scan);
-                }
-            });
+            // ServerPlayer wird Player1
+            activeGame.getServerPlayerWorm().setPlayerNumber(1);
 
-            startClient.start();*/
+        }
 
-            PeterClient client = new PeterClient(1234,"User1234");
-            Thread ClientThread = new Thread(client);
-            ClientThread.start();
+        // Netzwerk Client wird gestartet
+        Client client = new Client(activeGame.getNetworkPort(),activeGame.getNetworkIP(),activeGame.getClientPlayerWorm().getWormName());
 
-            Game.setPeterClientInstance(client.getInstance());
+        // Instanz des Client wird dem Game-Objekt mitgeteilt
+        activeGame.setPeterClientInstance(client.getInstance());
 
-         }
-
-        Parent sceneParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/worms.fxml")));
+        // Game Stage wird geladen
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/worms.fxml"));
+        Parent sceneParent = loader.load();
+        Game.setInGameControllerInstance((InGameController) loader.getController());
         Scene scene = new Scene(sceneParent);
 
-
+        // Client Thread wird gestartet
+        Thread ClientThread = new Thread(client);
+        ClientThread.start();
 
         //This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

@@ -29,30 +29,6 @@ public class Main2 extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            /*Thread startClient = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        Scanner scan = new Scanner(System.in);
-                        ChatClient client = new ChatClient("Player1", "localhost", 4444);
-                        client.startClient(scan);
-                    }
-                }
-            });*/
-
-            /*Thread startServer = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        ChatServer server = new ChatServer(5555);
-                        server.startServer();
-                    }
-                }
-            });*/
-
-            //startServer.start();
-            //startClient.start();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
