@@ -2,12 +2,16 @@ package controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -81,6 +85,9 @@ public class InGameController implements NetworkInterface {
 
     private WormFX activePlayerFX;
     private WormFX networkPlayerFX;
+
+    private int explosionSize = 96;
+    private int hitImpact = 50;
 
     @FXML
     public void initialize() {
@@ -159,6 +166,8 @@ public class InGameController implements NetworkInterface {
             case "lifepoints": setLifePoints(networkPlayerFX, Integer.parseInt(st.nextToken()));break;
             case "playername": setPlayerName(networkPlayerFX, st.nextToken()); break;
             case "playerskin": break;
+            case "gamewon": gameWon(); break;
+            case "gamelost": gameLost(); break;
             default: break;
         }
 
@@ -184,7 +193,7 @@ public class InGameController implements NetworkInterface {
 
     @FXML
     private void jump() {
-        if (activeGame.isGameIsRunning() & !activePlayerFX.isTargetActive()) {
+        if (activeGame.isGameIsRunning() & !activePlayerFX.isJumpActive()) {
             activePlayerFX.setJumpActive(true);
             jumpAnimation(activePlayerFX);
             activeClient.addNextMessage("jump#" + " " + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
@@ -215,19 +224,19 @@ public class InGameController implements NetworkInterface {
         int newValRotationAddup = 0;
 
         if (newVal > 0 && playerFX.getWormImage().getRotate() == 180 ) {
-            playerFX.getWormImage().setRotate(0);
+            playerFX.getWormImage().setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
             newValRotationAddup = 40;
         }
         else if (newVal > 0 && playerFX.getWormImage().getRotate() == 0){
-            playerFX.getWormImage().setRotate(0);
+            playerFX.getWormImage().setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
             newValRotationAddup = 40;
         }
         else if (newVal < 0 && playerFX.getWormImage().getRotate() == 180) {
-            playerFX.getWormImage().setRotate(180);
+            playerFX.getWormImage().setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
             newValRotationAddup = -40;
         }
         else if (newVal < 0 && playerFX.getWormImage().getRotate() == 0) {
-            playerFX.getWormImage().setRotate(180);
+            playerFX.getWormImage().setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
             newValRotationAddup = -40;
         }
 
@@ -254,36 +263,41 @@ public class InGameController implements NetworkInterface {
 
 
     private void jumpAnimation(WormFX playerFX) {
-        TranslateTransition ttTarget = new TranslateTransition(
+        TranslateTransition ttJump = new TranslateTransition(
                 Duration.seconds(0.1), playerFX.getWormImage());
 
-        ttTarget.setFromY(playerFX.getWormImage().getTranslateY());
-        ttTarget.setToY(playerFX.getWormImage().getTranslateY()-40);
-        ttTarget.setAutoReverse(true);
-        ttTarget.setOnFinished(event -> playerFX.setJumpActive(false));
-        ttTarget.play();
+        ttJump.setFromY(playerFX.getWormImage().getTranslateY());
+        ttJump.setToY(playerFX.getWormImage().getTranslateY()-40);
+        ttJump.setAutoReverse(true);
+        ttJump.setCycleCount(2);
+        ttJump.setOnFinished(event -> playerFX.setJumpActive(false));
+        ttJump.play();
     }
 
-
     private void shootAnimation(WormFX playerFX) {
-        double activeWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
-        double activeWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
+        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
+        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
         int shootingDirection = 1;
 
         playerFX.getWormRocket().setVisible(true);
 
         Rocket activeRocket = new Rocket(100, Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)),
-                9.81, borderPane.getHeight()-activeWormY);
+                9.81, borderPane.getHeight()-positionWormY);
 
 /*        System.out.println("Angle:" + Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)) + " ,X_Peak: " +
                 activeRocket.rocketPeakX() + " ,Y_Peak: " + activeRocket.rocketPeakY() + " " +
                 ",X_End:" + activeRocket.rocketEndX() );*/
 
-        if (playerFX.getWormImage().getRotate() == 180)
+        if (playerFX.getWormImage().getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT)
             shootingDirection = -1;
 
-        double bezierPointX = activeWormX + activeRocket.rocketPeakX()*shootingDirection;
-        double bezierPointY = borderPane.getHeight() - activeRocket.rocketBezierY();
+        double rocketBezierPointX = positionWormX + activeRocket.rocketPeakX()*shootingDirection;
+        double rocketBezierPointY = borderPane.getHeight() - activeRocket.rocketBezierY();
+        double rocketEndPointX = positionWormX + activeRocket.rocketEndX()*shootingDirection;
+        double rocketEndPointY = borderPane.getHeight();
+
+        playerFX.getWormExplosion().setTranslateX(rocketEndPointX-explosionSize/2);
+        playerFX.getWormExplosion().setTranslateY(rocketEndPointY-explosionSize);
 
         FadeTransition ftExplosion = new FadeTransition(
                 Duration.seconds(1.0), playerFX.getWormExplosion());
@@ -291,9 +305,9 @@ public class InGameController implements NetworkInterface {
         ftExplosion.setToValue(0.0);
 
         Path path = new Path();
-        path.getElements().add(new MoveTo(activeWormX,activeWormY));
-        path.getElements().add(new CubicCurveTo(bezierPointX, bezierPointY,
-                bezierPointX, bezierPointY, activeWormX + activeRocket.rocketEndX()*shootingDirection, borderPane.getHeight()));
+        path.getElements().add(new MoveTo(positionWormX,positionWormY));
+        path.getElements().add(new CubicCurveTo(rocketBezierPointX, rocketBezierPointY,
+                rocketBezierPointX, rocketBezierPointY, rocketEndPointX, rocketEndPointY));
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(activeRocket.rocketTime()*100));
         pathTransition.setPath(path);
@@ -302,14 +316,52 @@ public class InGameController implements NetworkInterface {
         pathTransition.setOnFinished(event -> { playerFX.getWormRocket().setVisible(false);
                                                 playerFX.setRocketActive(false);
                                                 playerFX.getWormExplosion().setVisible(true);
-                                                ftExplosion.play();}
+                                                ftExplosion.play();
+                                                if (playerFX.equals(networkPlayerFX))
+                                                hitDetection(activePlayerFX, rocketEndPointX, rocketEndPointY);}
                                                 );
         pathTransition.play();
     }
 
+    private void hitDetection(WormFX playerFX, double rocketEndPointX, double rocketEndPointY){
+        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
+        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
+
+        double distanceWormVsExplosionX = Math.abs(positionWormX - rocketEndPointX);
+        double distanceWormVsExplosionY = Math.abs(positionWormY - rocketEndPointY);
+
+        double distanceWormVsExplosion = Math.sqrt(distanceWormVsExplosionX*distanceWormVsExplosionX+
+                distanceWormVsExplosionY+distanceWormVsExplosionY);
+
+        if (distanceWormVsExplosion <= explosionSize/2){
+
+            int hitDamage = playerFX.getWorm().getLifePoints() - (int) (hitImpact * distanceWormVsExplosion / explosionSize * 2);
+            setLifePoints(playerFX,hitDamage);
+            activeClient.addNextMessage("lifepoints#" + hitDamage + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+            //hitAnimation(playerFX);
+        }
+
+    }
+
+    private void hitAnimation(WormFX playerFX)
+        {
+            playerFX.getWormImage().setEffect(new Glow(0.8));
+        }
+
     private void setLifePoints(WormFX playerFX, int newVal) {
-        playerFX.getWorm().setLifePoints(newVal);
-        playerFX.getWormLifePoints().setText(String.valueOf(newVal));
+        if (newVal > 0) {
+            playerFX.getWorm().setLifePoints(newVal);
+            playerFX.getWormLifePoints().setText(String.valueOf(newVal));
+
+        }
+        else {
+            playerFX.getWorm().setLifePoints(0);
+            playerFX.getWormLifePoints().setText(String.valueOf(newVal));
+            if (playerFX.equals(activePlayerFX))
+                activeClient.addNextMessage("gamewon#" + " " + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+            else
+                activeClient.addNextMessage("gamelost#" + " " + "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        }
     }
 
     private void setPlayerName(WormFX playerFX, String newName) {
@@ -328,6 +380,16 @@ public class InGameController implements NetworkInterface {
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
         activeGame.setGameIsRunning(true);
 
+    }
+
+    public void gameWon(){
+        gameMessage.setText("You Won");
+        activeGame.setGameIsRunning(false);
+    }
+
+    public void gameLost(){
+        gameMessage.setText("You Lost");
+        activeGame.setGameIsRunning(false);
     }
 
     public void quit()
