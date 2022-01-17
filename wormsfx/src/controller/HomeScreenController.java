@@ -54,7 +54,19 @@ public class HomeScreenController {
     public Button bt_right;
 
     @FXML
-    public ImageView iv_skin;
+    public ImageView iv_skin1;
+
+    @FXML
+    public ImageView iv_skin2;
+
+    @FXML
+    public ImageView iv_skin3;
+
+    @FXML
+    public ImageView iv_skin4;
+
+    @FXML
+    public ImageView iv_skin5;
 
     @FXML
     public void initialize() throws UnknownHostException {
@@ -183,14 +195,16 @@ public class HomeScreenController {
 
     }
 
+    @FXML
     public void previousSkin() {
         skinID--;
         if (skinID < 0) {
             skinID = Worm.WORM_SKINS - 1;
         }
-        iv_skin.setImage(new Image(String.format("/resources/worms/worm%d.png", skinID)));
+        setSkin(skinID);
     }
 
+    @FXML
     public void nextSkin() {
         skinID++;
         if (skinID >= Worm.WORM_SKINS) {
@@ -198,7 +212,45 @@ public class HomeScreenController {
                 skinID = 0;
             }
         }
-        iv_skin.setImage(new Image(String.format("/resources/worms/Rworm%d.png", skinID)));
+        setSkin(skinID);
+    }
+
+    public void setSkin (int skin) {
+        if (skin == 0) {
+            iv_skin1.setVisible(true);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+        }
+        else if (skin == 1) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(true);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+        }
+        else if (skin == 2) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(true);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+        }
+        else if (skin == 3) {
+            iv_skin1.setVisible(true);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(true);
+            iv_skin5.setVisible(false);
+        }
+        else if (skin == 4) {
+            iv_skin1.setVisible(true);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(true);
+            iv_skin5.setVisible(false);
+        }
     }
 
 

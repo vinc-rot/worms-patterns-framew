@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Game;
@@ -18,6 +19,9 @@ public class GeneralMenueController {
 
     @FXML
     private TextField playername;
+
+    @FXML
+    private Label name_1;
 
     public void changeScreenBack(ActionEvent event) throws IOException {
 
