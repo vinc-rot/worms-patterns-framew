@@ -2,15 +2,15 @@ package controller;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
-import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.Effect;
+import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -23,7 +23,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
 
-import java.util.EventObject;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 public class InGameController implements NetworkInterface {
@@ -78,6 +79,9 @@ public class InGameController implements NetworkInterface {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private Button btn_continue;
 
     private Game activeGame;
 
@@ -314,12 +318,12 @@ public class InGameController implements NetworkInterface {
         pathTransition.setNode(playerFX.getWormRocket());
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setOnFinished(event -> { playerFX.getWormRocket().setVisible(false);
-                                                playerFX.setRocketActive(false);
-                                                playerFX.getWormExplosion().setVisible(true);
-                                                ftExplosion.play();
-                                                if (playerFX.equals(networkPlayerFX))
-                                                hitDetection(activePlayerFX, rocketEndPointX, rocketEndPointY);}
-                                                );
+            playerFX.setRocketActive(false);
+            playerFX.getWormExplosion().setVisible(true);
+            ftExplosion.play();
+            if (playerFX.equals(networkPlayerFX))
+                hitDetection(activePlayerFX, rocketEndPointX, rocketEndPointY);}
+        );
         pathTransition.play();
     }
 
@@ -344,9 +348,9 @@ public class InGameController implements NetworkInterface {
     }
 
     private void hitAnimation(WormFX playerFX)
-        {
-            playerFX.getWormImage().setEffect(new Glow(0.8));
-        }
+    {
+        playerFX.getWormImage().setEffect(new Glow(0.8));
+    }
 
     private void setLifePoints(WormFX playerFX, int newVal) {
         if (newVal > 0) {
@@ -383,12 +387,17 @@ public class InGameController implements NetworkInterface {
     }
 
     public void gameWon(){
+        activeGame.setGameWon(true);
         gameMessage.setText("You Won");
+        btn_continue.setVisible(true);
+
         activeGame.setGameIsRunning(false);
     }
 
     public void gameLost(){
         gameMessage.setText("You Lost");
+        btn_continue.setVisible(true);
+
         activeGame.setGameIsRunning(false);
     }
 
@@ -398,4 +407,25 @@ public class InGameController implements NetworkInterface {
         activeGame.setGameIsRunning(true);
     }
 
+    public void changeScreenWinOrLose(ActionEvent event) throws IOException {
+        if (activeGame.isGameWon()) {
+            Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverWin.fxml")));
+            Scene tableViewScene = new Scene(tableViewParent);
+
+            //This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(tableViewScene);
+            window.show();
+        } else {
+            Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverLoose.fxml")));
+            Scene tableViewScene = new Scene(tableViewParent);
+
+            //This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(tableViewScene);
+            window.show();
+        }
+    }
 }

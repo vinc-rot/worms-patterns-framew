@@ -3,6 +3,7 @@ package model;
 import controller.NetworkObserver;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -64,6 +65,9 @@ public class Client implements Runnable{
                         dos.writeUTF(nextSend);
                     }
                 }
+            }
+            catch(ConnectException ex){
+                System.out.println("Server not available");
             }
             catch(IOException ex){
                 ex.printStackTrace();

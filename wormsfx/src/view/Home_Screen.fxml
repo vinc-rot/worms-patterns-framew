@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
+<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
    <children>
       <Pane id="mainPane" fx:id="mainPane" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;" stylesheets="@../resources/worms.css">
          <children>
@@ -68,6 +68,21 @@
                <effect>
                   <GaussianBlur radius="4.0" />
                </effect></Label>
+            <Label layoutX="425.0" layoutY="400.0" text="Avatar wählen" textFill="#e40b0b">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="448.0" text="IP-Adresse" textFill="#ffe017">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="50.0" layoutY="500.0" text="Port" textFill="#ffe017">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="114.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm1.png" />
@@ -78,7 +93,7 @@
                   <Image url="@../resources/worms/Rworm2.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="820.0" layoutY="644.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="49.0" fitWidth="106.0" layoutX="175.0" layoutY="575.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/worms/Rworm5.png" />
                </image>
@@ -88,7 +103,7 @@
                   <Image url="@../resources/badge.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="30.0" fitWidth="60.0" layoutX="415.0" layoutY="679.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="60.0" layoutX="350.0" layoutY="679.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/crossfade.png" />
                </image>
@@ -103,7 +118,7 @@
                </cursor>
             </Button>
 
-            <Button id="button1" fx:id="button1" layoutX="399.0" layoutY="554.0" mnemonicParsing="false" onAction="#changeScreenButtonPushed" prefHeight="69.0" prefWidth="224.0" text="Click to play" textFill="#e40b0b">
+            <Button id="button1" fx:id="button1" layoutX="670.0" layoutY="575.0" mnemonicParsing="false" onAction="#changeScreenButtonPushed" prefHeight="69.0" prefWidth="250.0" text="Click to fight" textFill="#e40b0b">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
@@ -133,7 +148,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="button3" layoutX="457.0" layoutY="670.0" mnemonicParsing="false" onAction="#changeScreenOptions" style="-fx-background-color: none;" text="Instructions" textFill="#ffe017">
+            <Button fx:id="button3" layoutX="390.0" layoutY="670.0" mnemonicParsing="false" onAction="#changeScreenOptions" style="-fx-background-color: none;" text="Instructions" textFill="#ffe017">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -141,49 +156,128 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-                  <ImageView fx:id="iv_skin1" fitHeight="150.0" fitWidth="80.0" layoutX="126.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" style="-fx-position:absolute">
+            <ImageView fx:id="iv_skin1" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="-fx-position:absolute">
+               <image>
+                  <Image url="@../resources/worms/Rworm0.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin2" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin3" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin4" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm3.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin5" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm4.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin6" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm5.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin7" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm6.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin8" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm7.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin9" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm8.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="iv_skin10" fitHeight="150.0" fitWidth="75.0" layoutX="444.0" layoutY="440.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
+               <image>
+                  <Image url="@../resources/worms/Rworm9.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER" layoutX="441.0" layoutY="600.0" spacing="2.0">
+               <children>
+                  <Button id="bt_left" fx:id="bt_left" mnemonicParsing="false" onAction="#previousSkin" styleClass="arrowButton">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="bt_right" fx:id="bt_right" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#nextSkin" onMouseClicked="#nextSkin" styleClass="arrowButton">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="50.0" layoutY="400.0" spacing="10.0">
+               <fx:define>
+                  <ToggleGroup fx:id="group" />
+               </fx:define>
+               <RadioButton fx:id="rb_CreateGame" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Spiel erstellen" textFill="#e40b0b" toggleGroup="$group">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </RadioButton>
+               <RadioButton fx:id="rb_JoinGame" layoutX="225.0" layoutY="400.0" mnemonicParsing="false" text="Spiel beitreten" textFill="#e40b0b" toggleGroup="$group">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </RadioButton>
+            </HBox>
+            <HBox fx:id="mapSelect" alignment="CENTER" layoutX="600.0" layoutY="400.0" spacing="20.0" visible="true">
+               <fx:define>
+                  <ToggleGroup fx:id="groupMap" />
+               </fx:define>
+               <VBox alignment="CENTER" spacing="20.0">
+                  <RadioButton fx:id="rb_NormalMap" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Normal" textFill="#e40b0b" toggleGroup="$groupMap">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </RadioButton>
+                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/worms/Rworm0.png" />
+                        <Image url="@../resources/background.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="iv_skin2" fitHeight="150.0" fitWidth="80.0" layoutX="126.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
+               </VBox>
+               <VBox alignment="CENTER" spacing="25.0">
+                  <RadioButton fx:id="rb_VulkanMap" layoutX="225.0" layoutY="400.0" mnemonicParsing="false" text="Vulkan" textFill="#e40b0b" toggleGroup="$groupMap">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </RadioButton>
+                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/worms/Rworm1.png" />
+                        <Image url="@../resources/Vulkan.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="iv_skin3" fitHeight="150.0" fitWidth="80.0" layoutX="126.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
+               </VBox>
+               <VBox alignment="CENTER" spacing="25.0">
+                  <RadioButton fx:id="rb_MoonMap" layoutX="225.0" layoutY="400.0" mnemonicParsing="false" text="Mond" textFill="#e40b0b" toggleGroup="$groupMap">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </RadioButton>
+                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resources/worms/Rworm2.png" />
+                        <Image url="@../resources/all_moon.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="iv_skin4" fitHeight="150.0" fitWidth="80.0" layoutX="126.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" style="position: absolute;" visible="false">
-                     <image>
-                        <Image url="@../resources/worms/Rworm3.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="iv_skin5" fitHeight="150.0" fitWidth="80.0" layoutX="126.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" style="position:absolute" visible="false">
-                     <image>
-                        <Image url="@../resources/worms/Rworm4.png" />
-                     </image>
-                  </ImageView>
-                  <HBox alignment="CENTER" layoutX="121.0" layoutY="465.0" spacing="2.0">
-                     <children>
-                        <Button id="bt_left" fx:id="bt_left" mnemonicParsing="false" onAction="#previousSkin" styleClass="arrowButton">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="bt_right" fx:id="bt_right" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#nextSkin" onMouseClicked="#nextSkin" styleClass="arrowButton">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                     </children>
-                  </HBox>
-            <RadioButton fx:id="rb_CreateGame" layoutX="627.0" layoutY="392.0" mnemonicParsing="false" text="Spiel erstellen" />
-            <RadioButton fx:id="rb_JoinGame" layoutX="809.0" layoutY="392.0" mnemonicParsing="false" text="Spiel beitreten" />
-            <TextField fx:id="tf_IP" layoutX="620.0" layoutY="465.0" prefHeight="25.0" prefWidth="152.0" promptText="IP-Adresse" text="localhost" />
-            <TextField fx:id="tf_Port" layoutX="809.0" layoutY="465.0" promptText="4444" text="4444" />
+               </VBox>
+            </HBox>
+            <TextField fx:id="tf_IP" layoutX="175.0" layoutY="450.0" prefHeight="25.0" prefWidth="152.0" promptText="IP-Adresse" style="-fx-background-color: #ffe017; -fx-text-inner-color: #e40b0b;" text="localhost" />
+            <TextField fx:id="tf_Port" layoutX="175.0" layoutY="500.0" promptText="4444" style="-fx-background-color: #ffe017; -fx-text-inner-color: #e40b0b;" text="4444" />
 
 
          </children>

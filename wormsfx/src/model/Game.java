@@ -14,6 +14,8 @@ public class Game {
 
     private boolean gameIsRunning = false;
 
+    private boolean gameWon = false;
+
     private static Game gameInstance;
 
     private static InGameController inGameControllerInstance;
@@ -75,6 +77,14 @@ public class Game {
 
     public void setGameIsRunning(boolean gameIsRunning) {
         this.gameIsRunning = gameIsRunning;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
     }
 }
 

@@ -3,6 +3,7 @@ package model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
@@ -14,8 +15,10 @@ import java.util.Vector;
 
 
 // Server class
-public class Server
+public class Server implements Runnable
 {
+
+    int port;
 
     // Vector to store active clients
     static Vector<ServerThreadHandler> ar = new Vector<>();
@@ -23,48 +26,64 @@ public class Server
     // counter for clients
     static int i = 1;
 
-    public void serverStart(int port) throws IOException
+    public Server(int port) {
+        this.port = port;
+    }
+
+    @Override
+    public void run()
     {
-        // server is listening on port 1234
-        ServerSocket ss = new ServerSocket(port);
+        try {
+            // server is listening on port 1234
+            ServerSocket ss = new ServerSocket(port);
 
-        Socket s;
+            Socket s;
 
-        // running infinite loop for getting
-        // client request
-        while (true)
-        {
-            // Accept the incoming request
-            s = ss.accept();
+            // running infinite loop for getting
+            // client request
+            while (true) {
+                // Accept the incoming request
+                s = ss.accept();
 
-            System.out.println("New client request received : " + s);
+                System.out.println("New client request received : " + s);
 
-            // obtain input and output streams
-            DataInputStream dis = new DataInputStream(s.getInputStream());
-            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                // obtain input and output streams
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
-            System.out.println("Creating a new handler for this client...");
+                System.out.println("Creating a new handler for this client...");
 
-            // Create a new handler object for handling this request.
-            ServerThreadHandler mtch = new ServerThreadHandler(s,"player" + i, dis, dos);
+                // Create a new handler object for handling this request.
+                ServerThreadHandler mtch = new ServerThreadHandler(s, "player" + i, dis, dos);
 
-            // Create a new Thread with this object.
-            Thread t = new Thread(mtch);
+                // Create a new Thread with this object.
+                Thread t = new Thread(mtch);
 
-            System.out.println("Adding this client to active client list");
+                System.out.println("Adding this client to active client list");
 
-            // add this client to active clients list
-            ar.add(mtch);
+                // add this client to active clients list
+                ar.add(mtch);
 
-            // start the thread.
-            t.start();
+                // start the thread.
+                t.start();
 
-            // increment i for new client.
-            // i is used for naming only, and can be replaced
-            // by any naming scheme
-            i++;
+                // increment i for new client.
+                // i is used for naming only, and can be replaced
+                // by any naming scheme
+                i++;
+
+            }
+        }
+        catch(BindException bex){
+            System.out.println("Server in Use");
 
         }
+        catch(IOException ex){
+            ex.printStackTrace();
+            System.out.println("Failure on Etablishing Server");
+        }
+
+
     }
 }
 

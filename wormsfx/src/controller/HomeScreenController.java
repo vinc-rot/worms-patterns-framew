@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,15 +9,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.*;
+import model.Client;
+import model.Game;
+import model.Server;
+import model.Worm;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -32,10 +38,25 @@ public class HomeScreenController {
     private Button quitButton;
 
     @FXML
+    private ToggleGroup group;
+
+    @FXML
     private RadioButton rb_CreateGame;
 
     @FXML
     private RadioButton rb_JoinGame;
+
+    @FXML
+    private HBox mapSelect;
+
+    @FXML
+    private RadioButton rb_NormalMap;
+
+    @FXML
+    private RadioButton rb_VulkanMap;
+
+    @FXML
+    private RadioButton rb_MoonMap;
 
     @FXML
     private TextField tf_IP;
@@ -69,16 +90,53 @@ public class HomeScreenController {
     public ImageView iv_skin5;
 
     @FXML
+    public ImageView iv_skin6;
+
+    @FXML
+    public ImageView iv_skin7;
+
+    @FXML
+    public ImageView iv_skin8;
+
+    @FXML
+    public ImageView iv_skin9;
+
+    @FXML
+    public ImageView iv_skin10;
+
+    @FXML
     public void initialize() throws UnknownHostException {
         // Game-Instanz wird auf Variable activeGame gesetzt
         activeGame = Game.getInstance();
 
         playerlabel.setText(activeGame.getClientPlayerWorm().getWormName());
 
-        ToggleGroup group = new ToggleGroup();
+/*        ToggleGroup group = new ToggleGroup();
         rb_CreateGame.setToggleGroup(group);
         rb_CreateGame.setSelected(true);
-        rb_JoinGame.setToggleGroup(group);
+        rb_JoinGame.setToggleGroup(group);*/
+
+/*        ToggleGroup groupMap = new ToggleGroup();
+        rb_NormalMap.setToggleGroup(groupMap);
+        rb_NormalMap.setSelected(true);
+        rb_VulkanMap.setToggleGroup(groupMap);
+        rb_MoonMap.setToggleGroup(groupMap);*/
+
+        /* Eventlistener für die Mapauswahl
+            - ist RadioButton rb_createGame ausgewählt, kann eine Map gewählt werden
+            - ist RadioButten rb_joinGame ausgewählt, wird keine Map-Auswahl angeboten
+         */
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                if (rb_CreateGame.isSelected()) {
+                    mapSelect.setVisible(true);
+                }
+                else {
+                    mapSelect.setVisible(false);
+                }
+            }
+        });
 
         tf_IP.setText(InetAddress.getLocalHost().getHostAddress());
 
@@ -111,7 +169,15 @@ public class HomeScreenController {
             activeGame.getServerPlayerWorm().setPlayerNumber(2);
 
             // Server wird gestartet
-            Thread runServer = new Thread(() -> {
+            Server server = new Server(activeGame.getNetworkPort());
+
+            // Server Thread wird gestartet
+            Thread ClientThread = new Thread(server);
+
+            ClientThread.start();
+
+
+/*            Thread runServer = new Thread(() -> {
                 while (true) {
                     Server server = new Server();
                     try {
@@ -121,7 +187,9 @@ public class HomeScreenController {
                     }
                 }
             });
-            runServer.start();
+            runServer.start();*/
+
+
         }
 
         if (rb_JoinGame.isSelected()) {
@@ -181,6 +249,19 @@ public class HomeScreenController {
         window.show();
     }
 
+    public void changeScreenBack(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
+        Parent sceneParent = loader.load();
+        Scene scene = new Scene(sceneParent);
+
+        //This line gets the Stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(scene);
+        window.show();
+    }
+
     private void changeSkin(KeyEvent event) {
         if (event.getCode() == KeyCode.RIGHT) {
             nextSkin();
@@ -222,6 +303,11 @@ public class HomeScreenController {
             iv_skin3.setVisible(false);
             iv_skin4.setVisible(false);
             iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
         }
         else if (skin == 1) {
             iv_skin1.setVisible(false);
@@ -229,6 +315,11 @@ public class HomeScreenController {
             iv_skin3.setVisible(false);
             iv_skin4.setVisible(false);
             iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
         }
         else if (skin == 2) {
             iv_skin1.setVisible(false);
@@ -236,23 +327,97 @@ public class HomeScreenController {
             iv_skin3.setVisible(true);
             iv_skin4.setVisible(false);
             iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
         }
         else if (skin == 3) {
-            iv_skin1.setVisible(true);
+            iv_skin1.setVisible(false);
             iv_skin2.setVisible(false);
             iv_skin3.setVisible(false);
             iv_skin4.setVisible(true);
             iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
         }
         else if (skin == 4) {
-            iv_skin1.setVisible(true);
+            iv_skin1.setVisible(false);
             iv_skin2.setVisible(false);
             iv_skin3.setVisible(false);
-            iv_skin4.setVisible(true);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(true);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
+        }
+        else if (skin == 5) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
             iv_skin5.setVisible(false);
+            iv_skin6.setVisible(true);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
+        }
+        else if (skin == 6) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(true);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
+        }
+        else if (skin == 7) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(true);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(false);
+        }
+        else if (skin == 8) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(true);
+            iv_skin10.setVisible(false);
+        }
+        else if (skin == 9) {
+            iv_skin1.setVisible(false);
+            iv_skin2.setVisible(false);
+            iv_skin3.setVisible(false);
+            iv_skin4.setVisible(false);
+            iv_skin5.setVisible(false);
+            iv_skin6.setVisible(false);
+            iv_skin7.setVisible(false);
+            iv_skin8.setVisible(false);
+            iv_skin9.setVisible(false);
+            iv_skin10.setVisible(true);
         }
     }
-
 
     // QuitButton-Handling
     @FXML

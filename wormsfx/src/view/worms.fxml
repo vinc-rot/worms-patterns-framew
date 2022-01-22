@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" style="-fx-background-color: derive(black,60%);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" style="-fx-background-color: derive(black,60%);" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
    <children>
       <BorderPane fx:id="borderPane" prefHeight="768.0" prefWidth="1024.0" />
       <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-                  <ImageView fx:id="backgroundImage" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true" scaleY="1.3">
-                     <image>
-                        <Image url="@../resources/background.png" />
-                     </image>
-                  </ImageView>
+            <ImageView fx:id="backgroundImage" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true" scaleY="1.3">
+               <image>
+                  <Image url="@../resources/background.png" />
+               </image>
+            </ImageView>
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="362.0" layoutY="334.0" prefHeight="100.0" prefWidth="300.0">
          <children>
-            <Text fx:id="gameMessage" fill="#df0000" strokeType="OUTSIDE" strokeWidth="0.0" >
+            <Text fx:id="gameMessage" fill="#df0000" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
                   <Font name="Droid Sans Bold" size="20.0" />
                </font>
             </Text>
          </children>
       </VBox>
-<!--      Player 1 + Punkte-->
+      <!--      Player 1 + Punkte-->
       <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="20.0" layoutY="35.0" prefHeight="50.0" prefWidth="150.0">
          <children>
             <ImageView fx:id="player1icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -47,7 +48,7 @@
          </children>
       </VBox>
 
-<!--      Player 2 + Punkte-->
+      <!--      Player 2 + Punkte-->
       <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="875.0" layoutY="35.0" prefHeight="50.0" prefWidth="150.0">
          <children>
             <ImageView fx:id="player2icon" fitHeight="50.0" fitWidth="50.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
@@ -67,6 +68,11 @@
             </Text>
          </children>
       </VBox>
+      <Button fx:id="btn_continue" layoutX="480.0" layoutY="420.0" mnemonicParsing="false" onAction="#changeScreenWinOrLose" text="Continue" textFill="#b91717" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
 
 
 

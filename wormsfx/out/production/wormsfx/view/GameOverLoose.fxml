@@ -6,7 +6,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InGameController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GeneralMenueController">
    <children>
       <Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;">
          <children>
@@ -85,17 +85,11 @@
                   <InnerShadow blurType="GAUSSIAN" />
                </effect>
             </Label>
-
-            <Label fx:id="newGame" layoutX="20.0" layoutY="730.0" text="New Game" textFill="#df0000">
+            <Button fx:id="button1" layoutX="936.0" layoutY="716.0" mnemonicParsing="false" onAction="#changeScreenBack" style="-fx-background-color: none;" text="Menü" textFill="#fc0606">
                <font>
-                  <Font name="Droid Sans Bold" size="18.0" />
+                  <Font name="System Bold" size="19.0" />
                </font>
-            </Label>
-            <Label fx:id="menue" layoutX="950.0" layoutY="730.0" text="Menu" textFill="#df0000">
-               <font>
-                  <Font name="Droid Sans Bold" size="18.0" />
-               </font>
-            </Label>
+            </Button>
          </children>
       </Pane>
    </children>
