@@ -1,6 +1,7 @@
 package model;
 
 import controller.InGameController;
+import javafx.scene.image.Image;
 
 public class Game {
 
@@ -11,6 +12,8 @@ public class Game {
     private String networkIP;
 
     private int networkPort;
+
+    private Image selectedMap;
 
     private boolean gameIsRunning = false;
 
@@ -85,6 +88,14 @@ public class Game {
 
     public void setGameWon(boolean gameWon) {
         this.gameWon = gameWon;
+    }
+
+    public Image getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(Image selectedMap) {
+        this.selectedMap = selectedMap;
     }
 }
 

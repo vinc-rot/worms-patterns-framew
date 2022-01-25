@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -83,6 +84,9 @@ public class InGameController implements NetworkInterface {
     @FXML
     private Button btn_continue;
 
+    @FXML
+    private ImageView backgroundImage;
+
     private Game activeGame;
 
     private Client activeClient;
@@ -128,8 +132,12 @@ public class InGameController implements NetworkInterface {
         activePlayerFX.setWorm(activeGame.getClientPlayerWorm());
         networkPlayerFX.setWorm(activeGame.getServerPlayerWorm());
 
+
         setPlayerName(activePlayerFX, activePlayerFX.getWorm().getWormName());
         setLifePoints(activePlayerFX, activePlayerFX.getWorm().getLifePoints());
+
+        System.out.println("Ausgelesene Map: " + activeGame.getSelectedMap().getUrl());
+        backgroundImage.setImage(new Image(activeGame.getSelectedMap().getUrl()));
 
     }
 

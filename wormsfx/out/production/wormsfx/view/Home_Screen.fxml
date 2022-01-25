@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
+<AnchorPane prefHeight="768.0" prefWidth="1024" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreenController">
    <children>
       <Pane id="mainPane" fx:id="mainPane" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: black;" stylesheets="@../resources/worms.css">
          <children>
@@ -224,10 +224,13 @@
                <fx:define>
                   <ToggleGroup fx:id="group" />
                </fx:define>
-               <RadioButton fx:id="rb_CreateGame" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Spiel erstellen" textFill="#e40b0b" toggleGroup="$group">
+               <RadioButton fx:id="rb_CreateGame" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Spiel erstellen" textFill="#e40b0b">
                   <font>
                      <Font name="System Bold" size="18.0" />
                   </font>
+                  <toggleGroup>
+                     <ToggleGroup fx:id="group" />
+                  </toggleGroup>
                </RadioButton>
                <RadioButton fx:id="rb_JoinGame" layoutX="225.0" layoutY="400.0" mnemonicParsing="false" text="Spiel beitreten" textFill="#e40b0b" toggleGroup="$group">
                   <font>
@@ -240,12 +243,15 @@
                   <ToggleGroup fx:id="groupMap" />
                </fx:define>
                <VBox alignment="CENTER" spacing="20.0">
-                  <RadioButton fx:id="rb_NormalMap" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Normal" textFill="#e40b0b" toggleGroup="$groupMap">
+                  <RadioButton fx:id="rb_NormalMap" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" selected="true" text="Normal" textFill="#e40b0b">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="groupMap" />
+                     </toggleGroup>
                   </RadioButton>
-                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="iv_mapNormal" fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/background.png" />
                      </image>
@@ -257,7 +263,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </RadioButton>
-                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="iv_mapVulkan" fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/Vulkan.jpg" />
                      </image>
@@ -269,7 +275,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </RadioButton>
-                  <ImageView fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="iv_mapMoon" fitHeight="65.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/all_moon.jpg" />
                      </image>
@@ -278,6 +284,7 @@
             </HBox>
             <TextField fx:id="tf_IP" layoutX="175.0" layoutY="450.0" prefHeight="25.0" prefWidth="152.0" promptText="IP-Adresse" style="-fx-background-color: #ffe017; -fx-text-inner-color: #e40b0b;" text="localhost" />
             <TextField fx:id="tf_Port" layoutX="175.0" layoutY="500.0" promptText="4444" style="-fx-background-color: #ffe017; -fx-text-inner-color: #e40b0b;" text="4444" />
+            <Text fx:id="tx_errorMessage" fill="WHITE" layoutX="53.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" />
 
 
          </children>

@@ -5,6 +5,7 @@ import controller.NetworkObserver;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 
@@ -14,6 +15,7 @@ public class Client implements Runnable{
     private int ServerPort;
     private String ServerIP;
     private String userName;
+    private Socket s;
     private LinkedList<String> messagesToSend;
     private volatile boolean hasMessages = false;
 
@@ -36,13 +38,23 @@ public class Client implements Runnable{
         }
     }
 
+    public boolean connect () {
+        try {
+            // establish the connection
+            s = new Socket(ServerIP, ServerPort);
+            return true;
+        }
+        catch (IOException ex)
+        {
+            return false;
+        }
+
+    }
+
     @Override
     public void run()
     {
             try{
-                // establish the connection
-                Socket s = new Socket(ServerIP, ServerPort);
-
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());

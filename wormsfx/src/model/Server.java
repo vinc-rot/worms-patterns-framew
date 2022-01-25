@@ -18,7 +18,9 @@ import java.util.Vector;
 public class Server implements Runnable
 {
 
-    int port;
+    private int port;
+    private ServerSocket ss;
+    private Socket s;
 
     // Vector to store active clients
     static Vector<ServerThreadHandler> ar = new Vector<>();
@@ -30,16 +32,30 @@ public class Server implements Runnable
         this.port = port;
     }
 
+    public boolean connect () {
+        // server is listening on port 1234
+        try {
+            ss = new ServerSocket(port);
+            return true;
+        }
+        catch (IOException ex)
+        {
+            return false;
+        }
+
+    }
+
+
     @Override
     public void run()
     {
         try {
-            // server is listening on port 1234
+           /* // server is listening on port 1234
             ServerSocket ss = new ServerSocket(port);
 
             Socket s;
 
-            // running infinite loop for getting
+  */          // running infinite loop for getting
             // client request
             while (true) {
                 // Accept the incoming request
@@ -75,7 +91,6 @@ public class Server implements Runnable
             }
         }
         catch(BindException bex){
-            System.out.println("Server in Use");
 
         }
         catch(IOException ex){

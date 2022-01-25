@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Client;
 import model.Game;
@@ -21,7 +22,6 @@ import model.Server;
 import model.Worm;
 
 import java.io.IOException;
-import java.net.BindException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -59,10 +59,22 @@ public class HomeScreenController {
     private RadioButton rb_MoonMap;
 
     @FXML
+    private ImageView iv_mapNormal;
+
+    @FXML
+    private ImageView iv_mapVulkan;
+
+    @FXML
+    private ImageView iv_mapMoon;
+
+    @FXML
     private TextField tf_IP;
 
     @FXML
     private TextField tf_Port;
+
+    @FXML
+    private Text tx_errorMessage;
 
     private Game activeGame;
     private int skinID = 0;
@@ -154,12 +166,14 @@ public class HomeScreenController {
 
     public void changeScreenButtonPushed(ActionEvent event) throws IOException {
 
+        boolean serverConnectionSucces = false;
+        boolean clientConnectionSucces = false;
+
         //Setzen des Netzwerk-IP und -Port in der Spieleumgebung
         activeGame.setNetworkIP(tf_IP.getText());
         activeGame.setNetworkPort(getIntFromTextField(tf_Port));
-
+        whichSelectedMap();
         //Wenn CreateGame ausgewählt -> Server wird gestartet + Client wird Player1
-
         if (rb_CreateGame.isSelected()) {
 
             // Client wird Player1
@@ -170,12 +184,12 @@ public class HomeScreenController {
 
             // Server wird gestartet
             Server server = new Server(activeGame.getNetworkPort());
+            serverConnectionSucces = server.connect();
 
-            // Server Thread wird gestartet
-            Thread ClientThread = new Thread(server);
-
-            ClientThread.start();
-
+            if (serverConnectionSucces) {
+                // Server Thread wird gestartet
+                Thread ServerThread = new Thread(server);
+                ServerThread.start();
 
 /*            Thread runServer = new Thread(() -> {
                 while (true) {
@@ -188,9 +202,12 @@ public class HomeScreenController {
                 }
             });
             runServer.start();*/
-
+            } else {
+                tx_errorMessage.setText("Server Failure: Port is already is use");
+            }
 
         }
+
 
         if (rb_JoinGame.isSelected()) {
 
@@ -202,29 +219,36 @@ public class HomeScreenController {
 
         }
 
+
         // Netzwerk Client wird gestartet
-        Client client = new Client(activeGame.getNetworkPort(),activeGame.getNetworkIP(),activeGame.getClientPlayerWorm().getWormName());
+        Client client = new Client(activeGame.getNetworkPort(), activeGame.getNetworkIP(), activeGame.getClientPlayerWorm().getWormName());
 
         // Instanz des Client wird dem Game-Objekt mitgeteilt
         activeGame.setPeterClientInstance(client.getInstance());
 
-        // Game Stage wird geladen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/worms.fxml"));
-        Parent sceneParent = loader.load();
-        Game.setInGameControllerInstance((InGameController) loader.getController());
-        Scene scene = new Scene(sceneParent);
+        clientConnectionSucces = client.connect();
 
-        // Client Thread wird gestartet
-        Thread ClientThread = new Thread(client);
-        ClientThread.start();
+        if (!clientConnectionSucces) tx_errorMessage.setText("Connection Failure: Server ist not available");
 
-        //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        if (rb_CreateGame.isSelected() & serverConnectionSucces & clientConnectionSucces | rb_JoinGame.isSelected() & clientConnectionSucces) {
+            // Game Stage wird geladen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/worms.fxml"));
+            Parent sceneParent = loader.load();
+            Game.setInGameControllerInstance((InGameController) loader.getController());
+            Scene scene = new Scene(sceneParent);
 
-        window.setScene(scene);
-        window.setResizable(false);
-        window.show();
-        scene.getRoot().requestFocus();
+            // Client Thread wird gestartet
+            Thread ClientThread = new Thread(client);
+            ClientThread.start();
+
+            //This line gets the Stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            window.setScene(scene);
+            window.setResizable(false);
+            window.show();
+            scene.getRoot().requestFocus();
+        }
     }
 
 
@@ -416,6 +440,19 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(true);
+        }
+    }
+
+    public void whichSelectedMap() {
+        if(rb_NormalMap.isSelected()) {
+            activeGame.setSelectedMap(iv_mapNormal.getImage());
+            System.out.println("URL Ausgewählte Map: " + iv_mapNormal.getImage().getUrl());
+        } else if (rb_VulkanMap.isSelected()) {
+            activeGame.setSelectedMap(iv_mapVulkan.getImage());
+            System.out.println("Ausgewählte Map: " + iv_mapVulkan.getImage().getUrl());
+        } else if (rb_MoonMap.isSelected()) {
+            activeGame.setSelectedMap(iv_mapMoon.getImage());
+            System.out.println("Ausgewählte Map: " + iv_mapMoon.getImage().getUrl());
         }
     }
 
