@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -79,6 +80,7 @@ public class HomeScreenController {
     private Game activeGame;
     private int skinID = 0;
     public Pane mainPane;
+    private Image actualSkin;
 
     @FXML
     public Button bt_left;
@@ -157,6 +159,7 @@ public class HomeScreenController {
             changeSkin(event);
         });
 
+        actualSkin = iv_skin1.getImage();
     }
 
     public static int getIntFromTextField(TextField tf_Port) {
@@ -172,9 +175,12 @@ public class HomeScreenController {
         //Setzen des Netzwerk-IP und -Port in der Spieleumgebung
         activeGame.setNetworkIP(tf_IP.getText());
         activeGame.setNetworkPort(getIntFromTextField(tf_Port));
-        whichSelectedMap();
+
         //Wenn CreateGame ausgewählt -> Server wird gestartet + Client wird Player1
         if (rb_CreateGame.isSelected()) {
+
+            // Map wird ausgelesen
+            whichSelectedMap();
 
             // Client wird Player1
             activeGame.getClientPlayerWorm().setPlayerNumber(1);
@@ -219,6 +225,7 @@ public class HomeScreenController {
 
         }
 
+        activeGame.getClientPlayerWorm().setWormAvatar(actualSkin);
 
         // Netzwerk Client wird gestartet
         Client client = new Client(activeGame.getNetworkPort(), activeGame.getNetworkIP(), activeGame.getClientPlayerWorm().getWormName());
@@ -332,6 +339,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin1.getImage();
         }
         else if (skin == 1) {
             iv_skin1.setVisible(false);
@@ -344,6 +352,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin2.getImage();
         }
         else if (skin == 2) {
             iv_skin1.setVisible(false);
@@ -356,6 +365,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin3.getImage();
         }
         else if (skin == 3) {
             iv_skin1.setVisible(false);
@@ -368,6 +378,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin4.getImage();
         }
         else if (skin == 4) {
             iv_skin1.setVisible(false);
@@ -380,6 +391,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin5.getImage();
         }
         else if (skin == 5) {
             iv_skin1.setVisible(false);
@@ -392,6 +404,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin6.getImage();
         }
         else if (skin == 6) {
             iv_skin1.setVisible(false);
@@ -404,6 +417,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin7.getImage();
         }
         else if (skin == 7) {
             iv_skin1.setVisible(false);
@@ -416,6 +430,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(true);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin8.getImage();
         }
         else if (skin == 8) {
             iv_skin1.setVisible(false);
@@ -428,6 +443,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(true);
             iv_skin10.setVisible(false);
+            actualSkin = iv_skin9.getImage();
         }
         else if (skin == 9) {
             iv_skin1.setVisible(false);
@@ -440,6 +456,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(true);
+            actualSkin = iv_skin10.getImage();
         }
     }
 

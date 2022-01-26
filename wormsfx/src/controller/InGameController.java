@@ -91,6 +91,7 @@ public class InGameController implements NetworkInterface {
 
     private Client activeClient;
 
+
     private WormFX activePlayerFX;
     private WormFX networkPlayerFX;
 
@@ -104,40 +105,43 @@ public class InGameController implements NetworkInterface {
         activeGame = Game.getInstance();
         activeClient = Game.getPeterClientInstance();
 
-        // Zusammenfassen der JavaFX-Objekte für Player 1 + 2
-        WormFX player1FX = new WormFX(new Worm(), player1, player1crossfade, player1rocket,
-                player1, player1explosion, player1name, player1lifepoints);
+        System.out.println("Ausgelesenen Avatar: " + activeGame.getClientPlayerWorm().getWormAvatar().getUrl());
 
-        WormFX player2FX = new WormFX(new Worm(), player2, player2crossfade, player2rocket,
-                player2, player2explosion, player2name, player2lifepoints);
+
+
+        // Zusammenfassen der JavaFX-Objekte für Player 1 + 2
+        WormFX player1FX = new WormFX(new Worm(), player1, player1crossfade, player1rocket, player1icon,
+                player1explosion, player1name, player1lifepoints);
+
+        WormFX player2FX = new WormFX(new Worm(), player2, player2crossfade, player2rocket, player2icon,
+                player2explosion, player2name, player2lifepoints);
 
         // Warten auf den Netzwerkspieler
         if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
         {
-            gameMessage.setText("[S] für Synchronisierung ");
+            gameMessage.setText("Warte aus Spieler 2");
 
             activePlayerFX = player1FX;
             networkPlayerFX = player2FX;
 
+            setMap(activeGame.getSelectedMap().getUrl());
+
         }
         else
         {
-            gameMessage.setText("[S] für Synchronisierng ");
-
             activePlayerFX = player2FX;
             networkPlayerFX = player1FX;
+
+            sendSync();
 
         }
 
         activePlayerFX.setWorm(activeGame.getClientPlayerWorm());
         networkPlayerFX.setWorm(activeGame.getServerPlayerWorm());
 
-
         setPlayerName(activePlayerFX, activePlayerFX.getWorm().getWormName());
         setLifePoints(activePlayerFX, activePlayerFX.getWorm().getLifePoints());
-
-        System.out.println("Ausgelesene Map: " + activeGame.getSelectedMap().getUrl());
-        backgroundImage.setImage(new Image(activeGame.getSelectedMap().getUrl()));
+        setPlayerWorm(activePlayerFX, activePlayerFX.getWorm().getWormAvatar());
 
     }
 
@@ -177,9 +181,11 @@ public class InGameController implements NetworkInterface {
             case "shoot": shootAnimation(networkPlayerFX); break;
             case "lifepoints": setLifePoints(networkPlayerFX, Integer.parseInt(st.nextToken()));break;
             case "playername": setPlayerName(networkPlayerFX, st.nextToken()); break;
-            case "playerskin": break;
+            case "playerskin": setPlayerWorm(networkPlayerFX, new Image(st.nextToken()));break;
             case "gamewon": gameWon(); break;
             case "gamelost": gameLost(); break;
+            case "map": setMap(st.nextToken()); break;
+            case "sync": syncGame(); break;
             default: break;
         }
 
@@ -224,7 +230,7 @@ public class InGameController implements NetworkInterface {
     private void walkAnimation(WormFX playerFX, int newVal) {
         TranslateTransition ttWorm = new TranslateTransition(
                 Duration.seconds(0.1),
-                playerFX.getWormLogo());
+                playerFX.getWormImage());
 
         TranslateTransition ttTarget = new TranslateTransition(
                 Duration.seconds(0.1),
@@ -381,6 +387,31 @@ public class InGameController implements NetworkInterface {
         playerFX.getWormName().setText(String.valueOf(newName));
     }
 
+
+    private void setPlayerWorm(WormFX playerFX, Image newImage) {
+        playerFX.getWorm().setWormAvatar(newImage);
+        playerFX.getWormImage().setImage(new Image(playerFX.getWorm().getWormAvatar().getUrl()));
+        playerFX.getWormLogo().setImage(new Image(playerFX.getWorm().getWormAvatar().getUrl()));
+    }
+
+    private void setMap(String mapUrl) {
+        System.out.println("Ausgelesene Map: " + mapUrl);
+        backgroundImage.setImage(new Image(mapUrl));
+
+    }
+
+    private void sendMap(String mapUrl) {
+        System.out.println("Gesendete Map: " + mapUrl);
+        activeClient.addNextMessage("map#" + mapUrl +
+                "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+    }
+
+    private void sendSync(){
+        activeClient.addNextMessage("sync#" +
+                "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+    }
+
+
     public void syncGame()
     {
         gameMessage.setText("");
@@ -388,8 +419,16 @@ public class InGameController implements NetworkInterface {
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
         activeClient.addNextMessage("playername#" + activePlayerFX.getWorm().getWormName() +
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
-        activeClient.addNextMessage("playerskin#" + activePlayerFX.getWorm().getWormSkin() +
+        activeClient.addNextMessage("playerskin#" + activePlayerFX.getWorm().getWormAvatar().getUrl() +
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+
+        if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
+        {
+            sendMap(activeGame.getSelectedMap().getUrl());
+            sendSync();
+
+        }
+
         activeGame.setGameIsRunning(true);
 
     }

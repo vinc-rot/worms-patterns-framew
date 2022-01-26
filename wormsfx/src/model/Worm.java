@@ -1,20 +1,24 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.util.Random;
 
 public class Worm {
 
-    public static final int WORM_SKINS = 23;
+    public static final int WORM_SKINS = 9;
     private String wormName;
     private int lifePoints = 100;
     private int playerNumber = 0;
     private int wormSkin = 0;
+    private Image wormAvatar;
     private boolean changed = false;
 
     public Worm() {
 
         setWormSkin(new Random().nextInt(WORM_SKINS));
     }
+
 
     public Worm(String wormName) {
         this.wormName = wormName;
@@ -62,5 +66,13 @@ public class Worm {
             throw new IllegalArgumentException(String.format("Angegebene Skin-Nummer [%d] Negativ", wormSkin));
 
         this.wormSkin = wormSkin;
+    }
+
+    public Image getWormAvatar() {
+        return wormAvatar;
+    }
+
+    public void setWormAvatar(Image wormAvatar) {
+        this.wormAvatar = wormAvatar;
     }
 }
