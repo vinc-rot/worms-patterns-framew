@@ -10,18 +10,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import model.HighScore;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class Main extends Application {
 
-    static InGameController inGameControllerHandle;
-
+    // public static ArrayList<HighScore> highScores=new ArrayList<>();
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         try {
-            FXMLLoader startScreenFXML = new FXMLLoader(getClass().getResource("Start_Screen.fxml"));
+            FXMLLoader startScreenFXML = new FXMLLoader(getClass().getResource("/view/Start_Screen.fxml"));
             Parent root = startScreenFXML.load();
             primaryStage.setTitle("Menü");
 
@@ -43,7 +45,16 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws IOException { launch(args);}
+    public static void main(String[] args) throws IOException { 
+   	// highScores.add(new HighScore(90,1,"Nils"));
+   	// highScores.add(new HighScore(56,1,"Jon"));
+   	// highScores.add(new HighScore(100,1,"Smith"));
+   	// highScores.add(new HighScore(98,1,"Steav"));
+   	// highScores.add(new HighScore(80,1,"Nils"));
+    	
+    	// HighScore.serialize();
+    	
+    	launch(args);}
 
 
 

@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
+import view.Main;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -119,7 +120,7 @@ public class InGameController implements NetworkInterface {
         // Warten auf den Netzwerkspieler
         if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
         {
-            gameMessage.setText("Warte aus Spieler 2");
+            gameMessage.setText("Warte auf Spieler 2");
 
             activePlayerFX = player1FX;
             networkPlayerFX = player2FX;
@@ -456,6 +457,15 @@ public class InGameController implements NetworkInterface {
 
     public void changeScreenWinOrLose(ActionEvent event) throws IOException {
         if (activeGame.isGameWon()) {
+
+            //HighScore score=new HighScore(Integer.parseInt(activePlayerFX.getWormLifePoints().getText()),1,activePlayerFX.getWormName().getText());
+            //System.out.println("Length of list "+Main.highScores.size());
+            //Main.highScores.add(score);
+
+            // HighScore.serialize();
+
+            GameOverWinController.points=Integer.parseInt(activePlayerFX.getWormLifePoints().getText());
+
             Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverWin.fxml")));
             Scene tableViewScene = new Scene(tableViewParent);
 
@@ -465,6 +475,13 @@ public class InGameController implements NetworkInterface {
             window.setScene(tableViewScene);
             window.show();
         } else {
+            //System.out.println("Length of list "+ Main.highScores.size());
+            //HighScore score=new HighScore(0,1,activePlayerFX.getWormName().getText());
+            //Main.highScores.add(score);
+
+            // HighScore.serialize();
+
+            GameOverLooseController.points=Integer.parseInt(activePlayerFX.getWormLifePoints().getText());
             Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverLoose.fxml")));
             Scene tableViewScene = new Scene(tableViewParent);
 

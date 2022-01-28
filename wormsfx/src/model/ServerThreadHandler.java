@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -40,6 +41,14 @@ class ServerThreadHandler implements Runnable
                     this.isloggedin = false;
                     this.s.close();
                     break;
+                }
+
+                if (received.equals("gethighscore")){
+                    HighScoreList highScoreList = new HighScoreList();
+                    highScoreList.deserialize();
+                    for(HighScore hs : highScoreList.getHighScores()) {
+
+                    }
                 }
 
                 // break the string into message and recipient part

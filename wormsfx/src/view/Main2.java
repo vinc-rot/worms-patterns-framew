@@ -9,19 +9,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.HighScore;
 
 import java.io.IOException;
 
 
 public class Main2 extends Application {
 
-    static InGameController inGameControllerHandle;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         try {
-            FXMLLoader startScreenFXML = new FXMLLoader(getClass().getResource("Start_Screen.fxml"));
+            FXMLLoader startScreenFXML = new FXMLLoader(getClass().getResource("/view/Start_Screen.fxml"));
             Parent root = startScreenFXML.load();
             primaryStage.setTitle("Menü");
 
@@ -43,7 +42,9 @@ public class Main2 extends Application {
     }
 
 
-    public static void main(String[] args) throws IOException { launch(args);}
+    public static void main(String[] args) throws IOException { 
+    	//HighScore.deserialize();
+    	launch(args);}
 
 
 

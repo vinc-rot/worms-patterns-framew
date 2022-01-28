@@ -15,6 +15,8 @@ public class Game {
 
     private Image selectedMap;
 
+    private HighScoreList highScoreList;
+
     private boolean gameIsRunning = false;
 
     private boolean gameWon = false;
@@ -96,6 +98,14 @@ public class Game {
 
     public void setSelectedMap(Image selectedMap) {
         this.selectedMap = selectedMap;
+    }
+
+    public HighScoreList getHighScoreList() {
+        return highScoreList;
+    }
+
+    public void setHighScoreList(HighScoreList highScoreList) {
+        this.highScoreList = highScoreList;
     }
 }
 
