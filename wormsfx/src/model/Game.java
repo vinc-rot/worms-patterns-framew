@@ -15,6 +15,8 @@ public class Game {
 
     private Image selectedMap;
 
+    private int backgroundID;
+
     private HighScoreList highScoreList = new HighScoreList();
 
     private boolean gameIsRunning = false;
@@ -107,5 +109,10 @@ public class Game {
     public void setHighScoreList(HighScoreList highScoreList) {
         this.highScoreList = highScoreList;
     }
+
+    public int getBackgroundID() { return backgroundID; }
+
+    public void setBackgroundID(int backgroundID) { this.backgroundID = backgroundID; }
+
 }
 

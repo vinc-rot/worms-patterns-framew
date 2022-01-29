@@ -80,7 +80,7 @@ public class HomeScreenController {
     private Game activeGame;
     private int skinID = 0;
     public Pane mainPane;
-    private Image actualSkin;
+    private int bgID = 1;
 
     @FXML
     public Button bt_left;
@@ -148,7 +148,6 @@ public class HomeScreenController {
             changeSkin(event);
         });
 
-        actualSkin = iv_skin1.getImage();
     }
 
     public static int getIntFromTextField(TextField tf_Port) {
@@ -206,7 +205,7 @@ public class HomeScreenController {
 
         if ((rb_CreateGame.isSelected() && serverConnectionSucces) || (rb_JoinGame.isSelected())) {
 
-            activeGame.getClientPlayerWorm().setWormAvatar(actualSkin);
+            activeGame.getClientPlayerWorm().setWormSkin(skinID);
 
             // Netzwerk Client wird gestartet
             Client client = new Client(activeGame.getNetworkPort(), activeGame.getNetworkIP(), activeGame.getClientPlayerWorm().getWormName());
@@ -303,7 +302,7 @@ public class HomeScreenController {
     public void nextSkin() {
         skinID++;
         if (skinID >= Worm.WORM_SKINS) {
-            if (skinID != 100) {
+            if (skinID != 10) {
                 skinID = 0;
             }
         }
@@ -322,7 +321,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin1.getImage();
+
         }
         else if (skin == 1) {
             iv_skin1.setVisible(false);
@@ -335,7 +334,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin2.getImage();
+
         }
         else if (skin == 2) {
             iv_skin1.setVisible(false);
@@ -348,7 +347,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin3.getImage();
+
         }
         else if (skin == 3) {
             iv_skin1.setVisible(false);
@@ -361,7 +360,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin4.getImage();
+
         }
         else if (skin == 4) {
             iv_skin1.setVisible(false);
@@ -374,7 +373,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin5.getImage();
+
         }
         else if (skin == 5) {
             iv_skin1.setVisible(false);
@@ -387,7 +386,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin6.getImage();
+
         }
         else if (skin == 6) {
             iv_skin1.setVisible(false);
@@ -400,7 +399,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin7.getImage();
+
         }
         else if (skin == 7) {
             iv_skin1.setVisible(false);
@@ -413,7 +412,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(true);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin8.getImage();
+
         }
         else if (skin == 8) {
             iv_skin1.setVisible(false);
@@ -426,7 +425,7 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(true);
             iv_skin10.setVisible(false);
-            actualSkin = iv_skin9.getImage();
+
         }
         else if (skin == 9) {
             iv_skin1.setVisible(false);
@@ -439,20 +438,17 @@ public class HomeScreenController {
             iv_skin8.setVisible(false);
             iv_skin9.setVisible(false);
             iv_skin10.setVisible(true);
-            actualSkin = iv_skin10.getImage();
+
         }
     }
 
     public void whichSelectedMap() {
         if(rb_NormalMap.isSelected()) {
-            activeGame.setSelectedMap(iv_mapNormal.getImage());
-            System.out.println("URL Ausgewählte Map: " + iv_mapNormal.getImage().getUrl());
+            activeGame.setBackgroundID(1);
         } else if (rb_VulkanMap.isSelected()) {
-            activeGame.setSelectedMap(iv_mapVulkan.getImage());
-            System.out.println("Ausgewählte Map: " + iv_mapVulkan.getImage().getUrl());
+            activeGame.setBackgroundID(2);
         } else if (rb_MoonMap.isSelected()) {
-            activeGame.setSelectedMap(iv_mapMoon.getImage());
-            System.out.println("Ausgewählte Map: " + iv_mapMoon.getImage().getUrl());
+            activeGame.setBackgroundID(3);
         }
     }
 

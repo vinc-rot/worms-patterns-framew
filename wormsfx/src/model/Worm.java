@@ -56,9 +56,9 @@ public class Worm {
     /**
      * @param wormSkin Legen Sie den Skin des Wurms fest
      */
-    private void setWormSkin(int wormSkin) {
-        if (wormSkin == 100) {
-            this.wormSkin = 100;
+    public void setWormSkin(int wormSkin) {
+        if (wormSkin == 10) {
+            this.wormSkin = 10;
         }
         else if (wormSkin >= WORM_SKINS)
             throw new IllegalArgumentException(String.format("Angegebene Skin-Nummer [%d] Über dem Limit",wormSkin));
