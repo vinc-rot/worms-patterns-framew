@@ -293,7 +293,7 @@ public class InGameController implements NetworkInterface {
 
     private void shootAnimation(WormFX playerFX) {
         double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX()+wormWidth/2;
-        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY()+wormHeight/2;
+        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY()-wormHeight/2;
         int shootingDirection;
 
         playerFX.getWormRocket().setVisible(true);
