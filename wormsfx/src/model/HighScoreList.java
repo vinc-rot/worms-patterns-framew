@@ -4,6 +4,7 @@ import view.Main;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HighScoreList {
 
@@ -44,6 +45,10 @@ public class HighScoreList {
             exception.printStackTrace();
         }
 
+    }
+
+    public void sort() {
+    Collections.sort(this.highScores,Collections.reverseOrder());
     }
 
     public ArrayList<HighScore> getHighScores() {

@@ -92,12 +92,13 @@ public class InGameController implements NetworkInterface {
 
     private Client activeClient;
 
-
     private WormFX activePlayerFX;
     private WormFX networkPlayerFX;
 
     private int explosionSize = 96;
-    private int hitImpact = 50;
+    private int hitImpact = 30;
+    private int wormHeight = 96;
+    private int wormWidth = 48;
 
     @FXML
     public void initialize() {
@@ -107,8 +108,6 @@ public class InGameController implements NetworkInterface {
         activeClient = Game.getPeterClientInstance();
 
         System.out.println("Ausgelesenen Avatar: " + activeGame.getClientPlayerWorm().getWormAvatar().getUrl());
-
-
 
         // Zusammenfassen der JavaFX-Objekte für Player 1 + 2
         WormFX player1FX = new WormFX(new Worm(), player1, player1crossfade, player1rocket, player1icon,
@@ -120,7 +119,7 @@ public class InGameController implements NetworkInterface {
         // Warten auf den Netzwerkspieler
         if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
         {
-            gameMessage.setText("Warte auf Spieler 2");
+            gameMessage.setText("Wait for Player 2");
 
             activePlayerFX = player1FX;
             networkPlayerFX = player2FX;
@@ -160,8 +159,6 @@ public class InGameController implements NetworkInterface {
                 case KP_LEFT: walk(-20); break;
                 case SPACE: shoot(); break;
                 case ENTER: jump(); break;
-                case S: syncGame(); break;
-                case ESCAPE: quit(); break;
                 default: break;
             }
         });
@@ -187,6 +184,7 @@ public class InGameController implements NetworkInterface {
             case "gamelost": gameLost(); break;
             case "map": setMap(st.nextToken()); break;
             case "sync": syncGame(); break;
+            case "highscore": addHighScore(st.nextToken(),Integer.parseInt(st.nextToken())); break;
             default: break;
         }
 
@@ -294,21 +292,19 @@ public class InGameController implements NetworkInterface {
     }
 
     private void shootAnimation(WormFX playerFX) {
-        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
-        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
-        int shootingDirection = 1;
+        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX()+wormWidth/2;
+        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY()+wormHeight/2;
+        int shootingDirection;
 
         playerFX.getWormRocket().setVisible(true);
 
         Rocket activeRocket = new Rocket(100, Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)),
                 9.81, borderPane.getHeight()-positionWormY);
 
-/*        System.out.println("Angle:" + Math.abs(Math.atan(playerFX.getWormTarget().getTranslateY()/40)) + " ,X_Peak: " +
-                activeRocket.rocketPeakX() + " ,Y_Peak: " + activeRocket.rocketPeakY() + " " +
-                ",X_End:" + activeRocket.rocketEndX() );*/
-
         if (playerFX.getWormImage().getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT)
             shootingDirection = -1;
+        else
+            shootingDirection = 1;
 
         double rocketBezierPointX = positionWormX + activeRocket.rocketPeakX()*shootingDirection;
         double rocketBezierPointY = borderPane.getHeight() - activeRocket.rocketBezierY();
@@ -342,9 +338,9 @@ public class InGameController implements NetworkInterface {
         pathTransition.play();
     }
 
-    private void hitDetection(WormFX playerFX, double rocketEndPointX, double rocketEndPointY){
-        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX();
-        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY();
+    private void hitDetection(WormFX playerFX, double rocketEndPointX, double rocketEndPointY) {
+        double positionWormX = playerFX.getWormImage().getX()+playerFX.getWormImage().getTranslateX()+(wormWidth/2);
+        double positionWormY = playerFX.getWormImage().getY()+playerFX.getWormImage().getTranslateY()+(wormHeight/2);
 
         double distanceWormVsExplosionX = Math.abs(positionWormX - rocketEndPointX);
         double distanceWormVsExplosionY = Math.abs(positionWormY - rocketEndPointY);
@@ -434,38 +430,46 @@ public class InGameController implements NetworkInterface {
 
     }
 
+    public void getHighScore(){
+        activeClient.addNextMessage("gethighscore");
+    }
+
+    public void addHighScore(String name, int score){
+        activeGame.getHighScoreList().getHighScores().add(new HighScore(score, 1, name));
+    }
+
+    public void sendHighScoretoServer(HighScore highScore){
+        activeClient.addNextMessage("addhighscore#" + highScore.getName() + "#" + highScore.getScore());
+    }
+
     public void gameWon(){
         activeGame.setGameWon(true);
         gameMessage.setText("You Won");
         btn_continue.setVisible(true);
-
         activeGame.setGameIsRunning(false);
+        getHighScore();
+        HighScore newHighScore = new HighScore(activePlayerFX.getWorm().getLifePoints(), 1, activePlayerFX.getWorm().getWormName());
+        activeGame.getHighScoreList().getHighScores().add(newHighScore);
+        sendHighScoretoServer(newHighScore);
     }
 
     public void gameLost(){
-        gameMessage.setText("You Lost");
+        gameMessage.setText("You Lose");
         btn_continue.setVisible(true);
-
         activeGame.setGameIsRunning(false);
+        getHighScore();
+        activeGame.getHighScoreList().getHighScores().add(new HighScore(networkPlayerFX.getWorm().getLifePoints(), 1, networkPlayerFX.getWorm().getWormName()));
     }
 
-    public void quit()
-    {
-        gameMessage.setText("");
-        activeGame.setGameIsRunning(true);
+    public void logout(){
+        activeClient.addNextMessage("logout");
     }
+
+
 
     public void changeScreenWinOrLose(ActionEvent event) throws IOException {
         if (activeGame.isGameWon()) {
-
-            //HighScore score=new HighScore(Integer.parseInt(activePlayerFX.getWormLifePoints().getText()),1,activePlayerFX.getWormName().getText());
-            //System.out.println("Length of list "+Main.highScores.size());
-            //Main.highScores.add(score);
-
-            // HighScore.serialize();
-
-            GameOverWinController.points=Integer.parseInt(activePlayerFX.getWormLifePoints().getText());
-
+            logout();
             Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverWin.fxml")));
             Scene tableViewScene = new Scene(tableViewParent);
 
@@ -475,13 +479,7 @@ public class InGameController implements NetworkInterface {
             window.setScene(tableViewScene);
             window.show();
         } else {
-            //System.out.println("Length of list "+ Main.highScores.size());
-            //HighScore score=new HighScore(0,1,activePlayerFX.getWormName().getText());
-            //Main.highScores.add(score);
-
-            // HighScore.serialize();
-
-            GameOverLooseController.points=Integer.parseInt(activePlayerFX.getWormLifePoints().getText());
+            logout();
             Parent tableViewParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/GameOverLoose.fxml")));
             Scene tableViewScene = new Scene(tableViewParent);
 

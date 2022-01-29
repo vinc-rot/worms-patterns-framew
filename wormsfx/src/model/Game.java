@@ -15,7 +15,7 @@ public class Game {
 
     private Image selectedMap;
 
-    private HighScoreList highScoreList;
+    private HighScoreList highScoreList = new HighScoreList();
 
     private boolean gameIsRunning = false;
 

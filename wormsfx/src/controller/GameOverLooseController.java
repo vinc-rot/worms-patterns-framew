@@ -13,15 +13,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import model.Game;
 
 public class GameOverLooseController implements Initializable  {
 	
 	@FXML
     private Label score;
-	
-	public static int points;
-	
-	
+
+    private Game activeGame;
+
 	public void changeScreenBack(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
@@ -37,8 +37,8 @@ public class GameOverLooseController implements Initializable  {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		score.setText(""+points);
+        activeGame = Game.getInstance();
+		score.setText("" + activeGame.getClientPlayerWorm().getLifePoints());
 	}
 	
 

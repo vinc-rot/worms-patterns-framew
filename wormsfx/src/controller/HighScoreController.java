@@ -15,7 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import model.Game;
 import model.HighScore;
+import model.HighScoreList;
 import view.Main;
 
 public class HighScoreController implements Initializable {
@@ -23,10 +25,10 @@ public class HighScoreController implements Initializable {
 	@FXML
     private Label score_1,score_2,score_3,score_4,score_5,name_1,name_2,name_3,name_4,name_5;
 	
-	
+	private Game activeGame;
+	private HighScoreList highScoreList;
 	
 	public void changeScreenBack(ActionEvent event) throws IOException {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Home_Screen.fxml"));
         Parent sceneParent = loader.load();
         Scene scene = new Scene(sceneParent);
@@ -41,21 +43,26 @@ public class HighScoreController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) 
 	{
-		// HighScore.deserialize();
-		/*Collections.sort(Main.highScores,Collections.reverseOrder());
-		//Main.highScores.sort(Comparator.comparing(HighScore::getScore));
-		name_1.setText(Main.highScores.get(0).getName());
-		name_2.setText(Main.highScores.get(1).getName());
-		name_3.setText(Main.highScores.get(2).getName());
-		name_4.setText(Main.highScores.get(3).getName());
-		name_5.setText(Main.highScores.get(4).getName());
-		
-		score_1.setText(""+Main.highScores.get(0).getScore());
-		score_2.setText(""+Main.highScores.get(1).getScore());
-		score_3.setText(""+Main.highScores.get(2).getScore());
-		score_4.setText(""+Main.highScores.get(3).getScore());
-		score_5.setText(""+Main.highScores.get(4).getScore());
-		// TODO Auto-generated method stub*/
+
+        activeGame = Game.getInstance();
+        highScoreList = activeGame.getHighScoreList();
+        while (highScoreList.getHighScores().size() < 5)
+        highScoreList.getHighScores().add(new HighScore(0,  0 , "........."));
+
+        highScoreList.sort();
+
+        name_1.setText(highScoreList.getHighScores().get(0).getName());
+		name_2.setText(highScoreList.getHighScores().get(1).getName());
+        name_3.setText(highScoreList.getHighScores().get(2).getName());
+        name_4.setText(highScoreList.getHighScores().get(3).getName());
+        name_5.setText(highScoreList.getHighScores().get(4).getName());
+
+        score_1.setText(""+highScoreList.getHighScores().get(0).getScore());
+        score_2.setText(""+highScoreList.getHighScores().get(1).getScore());
+        score_3.setText(""+highScoreList.getHighScores().get(2).getScore());
+        score_4.setText(""+highScoreList.getHighScores().get(3).getScore());
+        score_5.setText(""+highScoreList.getHighScores().get(4).getScore());
+
 		
 	}
 	

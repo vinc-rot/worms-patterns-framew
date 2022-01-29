@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class Main extends Application {
 
-    // public static ArrayList<HighScore> highScores=new ArrayList<>();
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -46,16 +45,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws IOException { 
-   	// highScores.add(new HighScore(90,1,"Nils"));
-   	// highScores.add(new HighScore(56,1,"Jon"));
-   	// highScores.add(new HighScore(100,1,"Smith"));
-   	// highScores.add(new HighScore(98,1,"Steav"));
-   	// highScores.add(new HighScore(80,1,"Nils"));
-    	
-    	// HighScore.serialize();
-    	
+
     	launch(args);}
-
-
 
 }
