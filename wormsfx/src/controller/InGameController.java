@@ -417,6 +417,7 @@ public class InGameController implements NetworkInterface {
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
         activeClient.addNextMessage("playerskin#" + activePlayerFX.getWorm().getWormSkin() +
                 "@player" + activeGame.getServerPlayerWorm().getPlayerNumber());
+        getHighScore();
 
         if (activeGame.getClientPlayerWorm().getPlayerNumber() == 1)
         {
@@ -446,7 +447,6 @@ public class InGameController implements NetworkInterface {
         gameMessage.setText("You Won");
         btn_continue.setVisible(true);
         activeGame.setGameIsRunning(false);
-        getHighScore();
         HighScore newHighScore = new HighScore(activePlayerFX.getWorm().getLifePoints(), 1, activePlayerFX.getWorm().getWormName());
         activeGame.getHighScoreList().getHighScores().add(newHighScore);
         sendHighScoretoServer(newHighScore);
@@ -456,7 +456,6 @@ public class InGameController implements NetworkInterface {
         gameMessage.setText("You Lose");
         btn_continue.setVisible(true);
         activeGame.setGameIsRunning(false);
-        getHighScore();
         activeGame.getHighScoreList().getHighScores().add(new HighScore(networkPlayerFX.getWorm().getLifePoints(), 1, networkPlayerFX.getWorm().getWormName()));
     }
 

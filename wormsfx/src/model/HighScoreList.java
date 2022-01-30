@@ -41,10 +41,11 @@ public class HighScoreList {
             System.out.println("HighScore class not found");
             c.printStackTrace();
             return;
+        } catch (FileNotFoundException exception) {
+            System.out.println("HighScore.dat not found");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-
     }
 
     public void sort() {
